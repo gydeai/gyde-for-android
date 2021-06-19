@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GydeLibrary</string>
+    <string name="guide_me">Guide Me</string>
+    <string name="play_video">Play Video</string>
+</resources>
