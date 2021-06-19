@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gyde">
         <activity android:name=".MainActivity"></activity>
+
+        <meta-data
+            android:name="GYDE_APP_ID"
+            android:value="b912fffa-3ee2-4b19-b07a-760ce047fe0e" />
     </application>
 
 </manifest>

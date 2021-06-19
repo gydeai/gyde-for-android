@@ -42,10 +42,8 @@ import kotlin.collections.ArrayList
 class WalkthroughFragment : Fragment(), WalkthroughListeners,
     CustomDialogGuideInformation.GuideInformationDialogListener,
     GydeTooltipWindow.TooTipClickListener {
-    private val walkthroughList = ArrayList<Walkthrough>()
     private var walkthroughListNew = ArrayList<Walkthrough>()
     private lateinit var mAdapter: WalkthroughAdapter
-    var activityList: List<Activity> = arrayListOf()
     var gydeApiKey: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -58,7 +56,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAdapter = WalkthroughAdapter(walkthroughList, this)
+        mAdapter = WalkthroughAdapter(Util.walkthroughList, this)
         val layoutManager = LinearLayoutManager(requireContext())
         recycler_walkthrough_list.layoutManager = layoutManager
         recycler_walkthrough_list.itemAnimator = DefaultItemAnimator()
@@ -76,7 +74,8 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
-        getWalkthroughListApiCall()
+
+        showWalkthroughList()
         edt_search.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -89,6 +88,14 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 return false
             }
         })
+    }
+
+    private fun showWalkthroughList() {
+        if (Util.walkthroughList.isNotEmpty()) {
+            mAdapter.updateData(Util.walkthroughList)
+        } else {
+            getWalkthroughListApiCall()
+        }
     }
 
     private fun filter(text: String) {
@@ -154,7 +161,8 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
                             response.body()?.let {
                                 mAdapter.updateData(it.walkthroughs)
                                 Util.helpArticle = it.helpArticles
-                                walkthroughListNew = it.walkthroughs
+                                Util.walkthroughList = it.walkthroughs
+//                                walkthroughListNew = it.walkthroughs
                             }
                         }
                         progressBar_cyclic!!.visibility = View.GONE
@@ -361,7 +369,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
             if (Util.walkthroughSteps[Util.stepCounter].stepDescription == GydeStepDescription.SHOW_TOOLTIP.value) {
                 showToolTip(1000)
             }
-            if (Util.walkthroughSteps[Util.stepCounter+1].stepDescription == GydeStepDescription.OPEN_DRAWER_MENU.value) {
+            if (Util.walkthroughSteps[Util.stepCounter + 1].stepDescription == GydeStepDescription.OPEN_DRAWER_MENU.value) {
                 openDrawerMenu()
             }
         } catch (ex: java.lang.Exception) {
