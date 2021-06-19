@@ -203,7 +203,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
                         progressBar_cyclic!!.visibility = View.GONE
                         if (response.isSuccessful) {
                             response.body()?.let {
-                                it.steps
+                                Util.walkthroughSteps = it.steps
                                 CustomDialogGuideInformation(
                                     requireContext(),
                                     this@WalkthroughFragment,
@@ -229,7 +229,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
     }
 
     override fun onStartGuideClicked() {
-        setUpData()
+//        setUpData()
         navigateToFirstScreen()
     }
 
