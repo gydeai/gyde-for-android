@@ -69,7 +69,7 @@
                         android:id="@+id/img_guide_me"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_view"
+                        android:src="@drawable/gyde_ic_view"
                         android:layout_marginStart="10dp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -95,7 +95,7 @@
                         android:id="@+id/img_play_video"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_video"
+                        android:src="@drawable/gyde_ic_video"
                         android:layout_marginStart="5dp" />
 
                     <androidx.appcompat.widget.AppCompatTextView

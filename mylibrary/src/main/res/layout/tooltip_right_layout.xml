@@ -9,13 +9,13 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="center"
-        android:background="@drawable/nav_left" />
+        android:background="@drawable/gyde_nav_left" />
 
     <TextView
         android:id="@+id/tooltip_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/tooltip_bg"
+        android:background="@drawable/gyde_tooltip_bg"
         android:gravity="center"
         android:padding="10dp"
         android:text="Magic"

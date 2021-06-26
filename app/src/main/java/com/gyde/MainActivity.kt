@@ -3,7 +3,7 @@ package com.gyde
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.gyde.mylibrary.GydeHomeActivity
+import com.gyde.mylibrary.screens.GydeHomeActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

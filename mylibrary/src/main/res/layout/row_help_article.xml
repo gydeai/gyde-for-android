@@ -29,7 +29,7 @@
                 android:id="@+id/img_icon"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:src="@drawable/ic_right_arrow_black"
+                android:src="@drawable/gyde_ic_right_arrow_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

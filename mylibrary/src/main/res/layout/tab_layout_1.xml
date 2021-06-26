@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:height="50dp"
-        android:background="@drawable/bg_rounded_search_box"
+        android:background="@drawable/gyde_bg_rounded_search_box"
         android:drawablePadding="20dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"

@@ -14,7 +14,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="center"
-        android:background="@drawable/nav_up" />
+        android:background="@drawable/gyde_nav_up" />
 
 
     <androidx.cardview.widget.CardView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_volume_up_24"
+                android:src="@drawable/gyde_ic_volume_up_24"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"/>
 
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/rounded_buttons"
+                android:background="@drawable/gyde_rounded_buttons"
                 tools:text="Next"
                 android:textColor="@color/white"
                 android:layout_marginBottom="5dp"
