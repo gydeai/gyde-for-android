@@ -145,10 +145,12 @@ class GydeHomeActivity : AppCompatActivity() {
                             response.body()?.let {
                                 if (!it.walkthroughs.isNullOrEmpty()) {
                                     Util.walkthroughList = it.walkthroughs
-                                    Util.helpArticle = it.helpArticles
                                     setUpTitle(it.welcomeGreeting, it.appName)
                                     setUpViewPager()
                                     setUpTabLayout(it.walkthroughTabText, it.helpArticlesTabText)
+                                }
+                                if (!it.helpArticles.isNullOrEmpty()) {
+                                    Util.helpArticle = it.helpArticles
                                 }
                             }
                         }

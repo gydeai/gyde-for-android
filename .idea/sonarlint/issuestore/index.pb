@@ -19,8 +19,6 @@ V
 &mylibrary/src/main/AndroidManifest.xml,9/6/96b1da1bcfd41bc2b1d4c1e14de318643546d7c9
 w
 Gmylibrary/src/main/java/com/gyde/mylibrary/utils/GydeTooltipPosition.kt,d/4/d495a934693e12deaa5b9361a082b878fdbecdb0
-x
-Hmylibrary/src/main/java/com/gyde/mylibrary/adapter/HelpArticleAdapter.kt,0/9/095563f0cd107726e987a95f44aba57a341975e4
 Z
 *app/src/main/java/com/gyde/MainActivity.kt,d/2/d21fbc788ff85c7d8ccdb6c3e5af02e7d563b814
 v
@@ -41,8 +39,6 @@ gmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/Wal
 Zmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/Walkthrough.kt,7/a/7a79f64266440a381321fd29b7bb2334fc331291
 ‡
 Wmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/Response.kt,d/5/d56fed71adc81ef44fa8569521ec343b1a872d3e
-z
-Jmylibrary/src/main/java/com/gyde/mylibrary/screens/HelpArticlesFragment.kt,9/c/9ceae8002de1e7ba5dde1204e1147c035c20acd9
 €
 Pmylibrary/src/main/java/com/gyde/mylibrary/screens/HelpArticleDetailsActivity.kt,5/f/5f5ed4f9127a7c71137f7d6ee942a74dcd14731d
 w

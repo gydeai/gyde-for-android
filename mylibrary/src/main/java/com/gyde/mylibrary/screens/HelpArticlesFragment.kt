@@ -16,6 +16,7 @@ import com.gyde.mylibrary.network.response.walkthroughlist.HelpArticle
 import com.gyde.mylibrary.utils.Util
 import com.gyde.mylibrary.R
 import kotlinx.android.synthetic.main.tab_layout_2.*
+import java.lang.Exception
 
 internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
     private val helpArticleList = ArrayList<HelpArticle>()
@@ -51,9 +52,16 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
     }
 
     override fun onHelpArticleClicked(helpArticle: HelpArticle) {
-        val helpArticleJson = Gson().toJson(helpArticle)
-        startActivity(Intent(requireContext(), HelpArticleDetailsActivity::class.java).let {
-            it.putExtra("helpArticleJson", helpArticleJson)
-        })
+        try {
+            val helpArticleJson = Gson().toJson(helpArticle)
+            startActivity(
+                Intent(requireContext(), HelpArticleDetailsActivity::class.java).putExtra(
+                    "helpArticleJson",
+                    helpArticleJson
+                )
+            )
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 }

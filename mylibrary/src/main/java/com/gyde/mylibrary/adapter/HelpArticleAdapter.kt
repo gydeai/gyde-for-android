@@ -31,10 +31,14 @@ internal class HelpArticleAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.title.text = String.format("%s", helpArticle[position].question)
-        holder.layoutHelpArticle.setOnClickListener {
-            mListener.onHelpArticleClicked(
-                helpArticle[position]
-            )
+        try {
+            holder.layoutHelpArticle.setOnClickListener {
+                mListener.onHelpArticleClicked(
+                    helpArticle[position]
+                )
+            }
+        } catch (ex: Exception){
+            ex.printStackTrace()
         }
     }
 
