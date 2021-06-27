@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edt_search"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/edt_search_article"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:height="50dp"
         android:background="@drawable/gyde_bg_rounded_search_box"
-        android:drawableStart="@drawable/gyde_ic_search"
         android:drawablePadding="20dp"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
@@ -25,6 +24,6 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edt_search" />
+        app:layout_constraintTop_toBottomOf="@id/edt_search_article" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

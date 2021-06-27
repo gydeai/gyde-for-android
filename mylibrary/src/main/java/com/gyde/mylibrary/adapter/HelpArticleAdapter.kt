@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gyde.mylibrary.listener.HelpArticleListener
 import com.gyde.mylibrary.network.response.walkthroughlist.HelpArticle
 import com.gyde.mylibrary.R
+import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 
 internal class HelpArticleAdapter(
     private var helpArticle: List<HelpArticle>,
@@ -51,4 +52,8 @@ internal class HelpArticleAdapter(
         notifyDataSetChanged()
     }
 
+    fun filterList(filteredList: ArrayList<HelpArticle>) {
+        helpArticle = filteredList
+        notifyDataSetChanged()
+    }
 }

@@ -12,11 +12,17 @@
         android:roundIcon="@mipmap/gyde_ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gyde">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="GYDE_APP_ID"
-            android:value="b912fffa-3ee2-4b19-b07a-760ce047fe0e" />
+            android:value="7aefb676-4ca2-4087-b360-274710b0411e" />
     </application>
 
 </manifest>

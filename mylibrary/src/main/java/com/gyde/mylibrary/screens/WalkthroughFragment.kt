@@ -43,7 +43,7 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
     GydeTooltipWindow.TooTipClickListener {
     private var walkthroughListNew = ArrayList<Walkthrough>()
     private lateinit var mAdapter: WalkthroughAdapter
-    var gydeApiKey: String = ""
+    private var gydeApiKey: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -61,20 +61,9 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
         recycler_walkthrough_list.itemAnimator = DefaultItemAnimator()
         recycler_walkthrough_list.adapter = mAdapter
 
-        try {
-            val ai: ApplicationInfo =
-                requireContext().packageManager.getApplicationInfo(
-                    requireContext().packageName,
-                    PackageManager.GET_META_DATA
-                )
-            val bundle = ai.metaData
-            gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
-
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-
+        getAppIdFromManifest()
         showWalkthroughList()
+
         edt_search.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -87,6 +76,20 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 return false
             }
         })
+    }
+
+    private fun getAppIdFromManifest() {
+        try {
+            val applicationInfo: ApplicationInfo =
+                requireContext().packageManager.getApplicationInfo(
+                    requireContext().packageName,
+                    PackageManager.GET_META_DATA
+                )
+            val bundle = applicationInfo.metaData
+            gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     private fun showWalkthroughList() {
@@ -221,7 +224,7 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
     }
 
     override fun onPlayVideoClicked() {
-
+        //TODO: this will be added once play video integrated on webportal
     }
 
     override fun onStartGuideClicked() {
@@ -325,7 +328,7 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
         Handler(Looper.getMainLooper()).postDelayed({
             val tipWindow = GydeTooltipWindow(
                 runningActivity,
-                GydeTooltipPosition.DRAW_TOP,
+                GydeTooltipPosition.DRAW_BOTTOM,
                 Util.walkthroughSteps[Util.stepCounter].viewId,
                 Util.walkthroughSteps[Util.stepCounter].title,
                 Util.walkthroughSteps[Util.stepCounter].content,

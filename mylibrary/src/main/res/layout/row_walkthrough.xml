@@ -90,7 +90,8 @@
                     android:orientation="horizontal"
                     app:layout_constraintStart_toEndOf="@id/view1"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="invisible">
                     <ImageView
                         android:id="@+id/img_play_video"
                         android:layout_width="20dp"

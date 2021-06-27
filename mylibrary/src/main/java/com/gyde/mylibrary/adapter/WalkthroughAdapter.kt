@@ -10,7 +10,10 @@ import com.gyde.mylibrary.listener.WalkthroughListeners
 import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 import com.gyde.mylibrary.R
 
-internal class WalkthroughAdapter (private var walkthroughList: List<Walkthrough>, listeners: WalkthroughListeners) :
+internal class WalkthroughAdapter(
+    private var walkthroughList: List<Walkthrough>,
+    listeners: WalkthroughListeners
+) :
     RecyclerView.Adapter<WalkthroughAdapter.MyViewHolder>() {
 
     var mListener: WalkthroughListeners = listeners

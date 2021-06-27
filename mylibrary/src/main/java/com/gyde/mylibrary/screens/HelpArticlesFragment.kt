@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,29 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
         recycler_help_article.layoutManager = layoutManager
         recycler_help_article.itemAnimator = DefaultItemAnimator()
         recycler_help_article.adapter = mAdapter
+
+        edt_search_article.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filter(newText)
+                return false
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        val filteredList: ArrayList<HelpArticle> = ArrayList()
+        for (item in Util.helpArticle) {
+            if (item.question.lowercase().contains(text.lowercase())) {
+                filteredList.add(item)
+            }
+        }
+        mAdapter.filterList(filteredList)
     }
 
     override fun onResume() {
@@ -55,7 +79,7 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
         try {
             val helpArticleJson = Gson().toJson(helpArticle)
             startActivity(
-                Intent(requireContext(), HelpArticleDetailsActivity::class.java).putExtra(
+                Intent(requireActivity(), HelpArticleDetailsActivity::class.java).putExtra(
                     "helpArticleJson",
                     helpArticleJson
                 )
