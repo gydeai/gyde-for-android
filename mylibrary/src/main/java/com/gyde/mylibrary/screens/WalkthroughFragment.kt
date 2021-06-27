@@ -350,7 +350,11 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
             )
             tipWindow.showTooltip(
                 if (Util.stepCounter < Util.walkthroughSteps.size) {
-                    Util.walkthroughSteps[Util.stepCounter + 1].stepDescription
+                    if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
+                        2
+                    } else {
+                        Util.walkthroughSteps[Util.stepCounter + 1].stepDescription
+                    }
                 } else {
                     2
                 }
