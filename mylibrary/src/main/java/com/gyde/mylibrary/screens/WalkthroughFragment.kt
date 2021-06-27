@@ -21,7 +21,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.gyde.mylibrary.adapter.WalkthroughAdapter
 import com.gyde.mylibrary.listener.WalkthroughListeners
 import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
@@ -162,7 +161,6 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                                 mAdapter.updateData(it.walkthroughs)
                                 Util.helpArticle = it.helpArticles
                                 Util.walkthroughList = it.walkthroughs
-//                                walkthroughListNew = it.walkthroughs
                             }
                         }
                         progressBar_cyclic!!.visibility = View.GONE
@@ -174,16 +172,6 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                     }
                 })
         }
-    }
-
-    private fun setUpData() {
-        val dummyJson = JsonUtils.getJsonDataFromAsset(
-            requireContext(),
-            "walkthroughSteps.json"
-        )
-
-        var response = Gson().fromJson(dummyJson, WalkthroughStepsResponse::class.java)
-        Util.walkthroughSteps = response.steps
     }
 
     companion object {
@@ -237,7 +225,6 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
     }
 
     override fun onStartGuideClicked() {
-//        setUpData()
         navigateToFirstScreen()
     }
 
@@ -322,7 +309,8 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 } else {
                     "Next"
                 },
-                this
+                this,
+                Util.walkthroughSteps[Util.stepCounter].voiceOverPath
             )
             tipWindow.openDrawerMenu()
             incrementCounter()
@@ -346,7 +334,8 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 } else {
                     "Next"
                 },
-                this
+                this,
+                Util.walkthroughSteps[Util.stepCounter].voiceOverPath
             )
             tipWindow.showTooltip(
                 if (Util.stepCounter < Util.walkthroughSteps.size) {
@@ -363,6 +352,9 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
         }, delay)
     }
 
+    /**
+     * Navigate to next screen as per the walkthrough steps
+     */
     private fun navigateToNextScreen() {
         val activityToStart = Util.walkthroughSteps[Util.stepCounter].screenName
         try {

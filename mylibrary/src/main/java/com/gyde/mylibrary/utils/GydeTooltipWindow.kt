@@ -29,6 +29,7 @@ internal class GydeTooltipWindow(
     private val descriptionText: String?,
     private val buttonText: String?,
     private val nextClickListener: TooTipClickListener,
+    private val voiceOverPath: String?,
 ) {
 
     interface TooTipClickListener {
@@ -146,18 +147,20 @@ internal class GydeTooltipWindow(
         }
 
         mImgPlayAudio.setOnClickListener {
-            playAudio()
+            if (voiceOverPath!=null && voiceOverPath.isNotEmpty()) {
+                playAudio(voiceOverPath)
+            }
         }
     }
 
-    private fun playAudio() {
+    private fun playAudio(voiceOverPath: String) {
         if (!mIsAudioPlaying) {
             mIsAudioPlaying = true
             if (mediaPlayer == null) {
                 mediaPlayer = MediaPlayer()
             }
             try {
-                mediaPlayer?.setDataSource("https://widget.gyde.ai/walkthrough-voiceovers/45abcc87-c8a6-4edd-b475-8d3545ee541f-1.mp3")
+                mediaPlayer?.setDataSource(voiceOverPath)
                 mediaPlayer?.prepare()
                 mediaPlayer?.start()
             } catch (e: IOException) {
