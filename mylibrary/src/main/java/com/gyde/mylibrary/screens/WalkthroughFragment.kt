@@ -39,7 +39,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class WalkthroughFragment : Fragment(), WalkthroughListeners,
+internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
     CustomDialogGuideInformation.GuideInformationDialogListener,
     GydeTooltipWindow.TooTipClickListener {
     private var walkthroughListNew = ArrayList<Walkthrough>()
@@ -250,7 +250,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
         } catch (ignored: ClassNotFoundException) {
             ignored.printStackTrace()
         }
-        Util.stepCounter += 1
+        incrementCounter()
         showToolTip(1000)
     }
 
@@ -325,7 +325,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 this
             )
             tipWindow.openDrawerMenu()
-            Util.stepCounter += 1
+            incrementCounter()
         }, 500)
     }
 
@@ -349,7 +349,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 this
             )
             tipWindow.showTooltip(Util.walkthroughSteps[Util.stepCounter + 1].stepDescription)
-            Util.stepCounter += 1
+            incrementCounter()
         }, delay)
     }
 
@@ -362,9 +362,7 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
         } catch (ignored: ClassNotFoundException) {
             ignored.printStackTrace()
         }
-        if (Util.stepCounter < Util.walkthroughSteps.size) {
-            Util.stepCounter += 1
-        }
+        incrementCounter()
         try {
             if (Util.walkthroughSteps[Util.stepCounter].stepDescription == GydeStepDescription.SHOW_TOOLTIP.value) {
                 showToolTip(1000)
@@ -374,6 +372,12 @@ class WalkthroughFragment : Fragment(), WalkthroughListeners,
             }
         } catch (ex: java.lang.Exception) {
             ex.printStackTrace()
+        }
+    }
+
+    private fun incrementCounter() {
+        if (Util.stepCounter < Util.walkthroughSteps.size) {
+            Util.stepCounter += 1
         }
     }
 }

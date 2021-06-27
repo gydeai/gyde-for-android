@@ -21,7 +21,7 @@ import com.gyde.mylibrary.R
 import java.io.IOException
 
 
-class GydeTooltipWindow(
+internal class GydeTooltipWindow(
     private var context: Context,
     private var toolTipPosition: GydeTooltipPosition,
     private val viewId: String?,
@@ -39,7 +39,7 @@ class GydeTooltipWindow(
     private var contentView: View
     private var mTooltipTitle: TextView
     private var mTooltipDescription: TextView
-    private lateinit var mImgPlayAudio: ImageView
+    private var mImgPlayAudio: ImageView
     private var mNextButton: Button
     private var mImageArrow: ImageView
     private var tipWindow: PopupWindow? = null
@@ -75,6 +75,18 @@ class GydeTooltipWindow(
                 val layoutParams = LinearLayout.LayoutParams(height, height)
                 layoutParams.gravity = Gravity.END
                 layoutParams.setMargins(0, 0, 10, 0)
+                mImageArrow.layoutParams = layoutParams
+            }
+            GydeTooltipArrowPosition.ARROW_TOP_CENTER -> {
+                val layoutParams = LinearLayout.LayoutParams(height, height)
+                layoutParams.gravity = Gravity.CENTER
+                layoutParams.setMargins(0, 0, 10, 0)
+                mImageArrow.layoutParams = layoutParams
+            }
+            GydeTooltipArrowPosition.ARROW_DEFAULT_CENTER -> {
+                val layoutParams = LinearLayout.LayoutParams(height, height)
+                layoutParams.gravity = Gravity.CENTER
+                layoutParams.setMargins(0, 0, 0, 0)
                 mImageArrow.layoutParams = layoutParams
             }
         }

@@ -7,7 +7,7 @@ import com.gyde.mylibrary.R
 import com.gyde.mylibrary.network.response.walkthroughlist.HelpArticle
 import kotlinx.android.synthetic.main.activity_help_article_details.*
 
-class HelpArticleDetailsActivity : AppCompatActivity() {
+internal class HelpArticleDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help_article_details)

@@ -1,5 +1,5 @@
 package com.gyde.mylibrary.listener
 
-interface ListenerForToolTipWindow {
+internal interface ListenerForToolTipWindow {
     fun onGuideMeClicked()
 }

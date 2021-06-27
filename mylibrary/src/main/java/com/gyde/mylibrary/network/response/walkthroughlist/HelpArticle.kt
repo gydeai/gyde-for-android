@@ -1,6 +1,6 @@
 package com.gyde.mylibrary.network.response.walkthroughlist
 
-data class HelpArticle(
+ data class HelpArticle(
     val category: String,
     val draftMode: Int,
     val language: String,

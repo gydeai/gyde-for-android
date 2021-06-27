@@ -2,4 +2,6 @@
     <string name="app_name">GydeLibrary</string>
     <string name="guide_me">Guide Me</string>
     <string name="play_video">Play Video</string>
+    <string name="please_check_your_internet_connection_and_try_again">Please check your internet connection and try again.</string>
+    <string name="okay">Okay</string>
 </resources>

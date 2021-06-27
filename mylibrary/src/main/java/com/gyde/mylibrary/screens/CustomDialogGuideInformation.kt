@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.button.MaterialButton
 import com.gyde.mylibrary.R
 
-class CustomDialogGuideInformation(
+internal class CustomDialogGuideInformation(
     context: Context,
     private val listener: GuideInformationDialogListener,
     private val flowName: String,

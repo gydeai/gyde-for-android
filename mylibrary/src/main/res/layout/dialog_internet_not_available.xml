@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:lineSpacingExtra="5dp"
-            android:text="Please check your internet connection and try again."
+            android:text="@string/please_check_your_internet_connection_and_try_again"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/txt_title"
             app:layout_constraintTop_toBottomOf="@id/txt_title" />
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:foreground="?android:attr/selectableItemBackground"
-            android:text="Okay"
+            android:text="@string/okay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_message" />
 

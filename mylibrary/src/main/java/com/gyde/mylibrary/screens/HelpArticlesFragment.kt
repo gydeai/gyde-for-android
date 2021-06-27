@@ -17,7 +17,7 @@ import com.gyde.mylibrary.utils.Util
 import com.gyde.mylibrary.R
 import kotlinx.android.synthetic.main.tab_layout_2.*
 
-class HelpArticlesFragment : Fragment(), HelpArticleListener {
+internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
     private val helpArticleList = ArrayList<HelpArticle>()
     private lateinit var mAdapter: HelpArticleAdapter
     override fun onCreateView(
