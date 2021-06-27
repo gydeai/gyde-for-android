@@ -348,7 +348,13 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                 },
                 this
             )
-            tipWindow.showTooltip(Util.walkthroughSteps[Util.stepCounter + 1].stepDescription)
+            tipWindow.showTooltip(
+                if (Util.stepCounter < Util.walkthroughSteps.size) {
+                    Util.walkthroughSteps[Util.stepCounter + 1].stepDescription
+                } else {
+                    2
+                }
+            )
             incrementCounter()
         }, delay)
     }

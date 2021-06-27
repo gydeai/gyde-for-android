@@ -15,7 +15,5 @@ P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 @
 app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
-v
-Fmylibrary/src/main/java/com/gyde/mylibrary/screens/GydeHomeActivity.kt,e/d/ed463964050ee95fae33451a2e9f640a8af7d49e
 V
 &mylibrary/src/main/AndroidManifest.xml,9/6/96b1da1bcfd41bc2b1d4c1e14de318643546d7c9
