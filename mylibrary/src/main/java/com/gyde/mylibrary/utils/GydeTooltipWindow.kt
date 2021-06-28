@@ -149,6 +149,7 @@ internal class GydeTooltipWindow(
         }
 
         setVolumeDrawable()
+        playAudio(voiceOverPath ?: "")
         mImgPlayAudio.setOnClickListener {
             if (voiceOverPath != null && voiceOverPath.isNotEmpty()) {
                 if (Util.isPlayVoiceOverEnabled) {
@@ -163,7 +164,7 @@ internal class GydeTooltipWindow(
     }
 
     private fun playAudio(voiceOverPath: String) {
-        if (!mIsAudioPlaying && Util.isPlayVoiceOverEnabled) {
+        if (!mIsAudioPlaying && Util.isPlayVoiceOverEnabled && voiceOverPath.isNotEmpty()) {
             mIsAudioPlaying = true
             if (mediaPlayer == null) {
                 mediaPlayer = MediaPlayer()
