@@ -167,6 +167,7 @@ internal class GydeTooltipWindow(
             mIsAudioPlaying = true
             if (mediaPlayer == null) {
                 mediaPlayer = MediaPlayer()
+
             }
             try {
                 mediaPlayer?.setDataSource(voiceOverPath)
