@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -152,16 +153,30 @@ class GydeHomeActivity : AppCompatActivity() {
                                 if (!it.helpArticles.isNullOrEmpty()) {
                                     Util.helpArticle = it.helpArticles
                                 }
+                                setBackgroundColor(it.headerColor, it.headerTextColor, it.btnColor)
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<WalkthroughsListResponse>, t: Throwable) {
                         progressBar_cyclic!!.visibility = View.GONE
-                        Toast.makeText(this@GydeHomeActivity, "${t.message}", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@GydeHomeActivity, "${t.message}",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                 })
         }
+    }
+
+    private fun setBackgroundColor(headerColor: String, headerTextColor: String, btnColor: String) {
+        Util.headerColor = headerColor
+        Util.headerTextColor = headerTextColor
+        Util.btnColor = btnColor
+
+        layout_welcome.setBackgroundColor(Color.parseColor(headerColor))
+        tv_greeting.setTextColor(Color.parseColor(headerTextColor))
+
     }
 }

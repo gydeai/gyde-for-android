@@ -1,14 +1,18 @@
 package com.gyde.mylibrary.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gyde.mylibrary.listener.WalkthroughListeners
 import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 import com.gyde.mylibrary.R
+import com.gyde.mylibrary.utils.Util
 
 internal class WalkthroughAdapter(
     private var walkthroughList: List<Walkthrough>,
@@ -22,6 +26,14 @@ internal class WalkthroughAdapter(
         var title: TextView = view.findViewById(R.id.tv_title)
         var layoutGuideMe: LinearLayout = view.findViewById(R.id.layout_guide_me)
         var layoutPlayVideo: LinearLayout = view.findViewById(R.id.layout_play_video)
+
+        var imgGuideMe: ImageView = view.findViewById(R.id.img_guide_me)
+        var imgPlayVideo: ImageView = view.findViewById(R.id.img_play_video)
+        var tvLblGuideMe: AppCompatTextView = view.findViewById(R.id.tv_lbl_guide_me)
+        var tvLblPlayVideo: AppCompatTextView = view.findViewById(R.id.tv_lbl_play_video)
+
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -31,6 +43,11 @@ internal class WalkthroughAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.imgGuideMe.setColorFilter(Color.parseColor(Util.headerColor))
+        holder.imgPlayVideo.setColorFilter(Color.parseColor(Util.headerColor))
+        holder.tvLblGuideMe.setTextColor(Color.parseColor(Util.headerColor))
+        holder.tvLblPlayVideo.setTextColor(Color.parseColor(Util.headerColor))
+
         holder.title.text = String.format("%s", walkthroughList[position].flowName)
         holder.layoutGuideMe.setOnClickListener {
             mListener.onGuideMeClicked(walkthroughList[position].flowId)

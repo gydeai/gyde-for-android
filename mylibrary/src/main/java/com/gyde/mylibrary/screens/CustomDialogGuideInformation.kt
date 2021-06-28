@@ -2,12 +2,14 @@ package com.gyde.mylibrary.screens
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.button.MaterialButton
 import com.gyde.mylibrary.R
+import com.gyde.mylibrary.utils.Util
 
 internal class CustomDialogGuideInformation(
     context: Context,
@@ -37,6 +39,7 @@ internal class CustomDialogGuideInformation(
         tvTitle.text = flowName
         tvGuideDescription.text = flowDescription
         tvTotalSteps.text = String.format("%s Steps", totalSteps)
+        btnStartGuide.setBackgroundColor(Color.parseColor(Util.btnColor))
 
         btnStartGuide.setOnClickListener {
             listener.onStartGuideClicked()

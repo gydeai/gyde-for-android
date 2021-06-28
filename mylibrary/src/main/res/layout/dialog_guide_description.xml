@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/white">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
@@ -61,7 +62,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="13 Steps"
             android:textSize="18sp"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:visibility="invisible"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_start_guide"

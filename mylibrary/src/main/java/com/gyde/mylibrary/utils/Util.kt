@@ -10,5 +10,9 @@ class Util {
         lateinit var walkthroughList: List<Walkthrough>
         lateinit var walkthroughSteps: List<Step>
         var stepCounter = 0
+        var isPlayVoiceOverEnabled = false
+        var headerColor = ""
+        var headerTextColor = ""
+        var btnColor = ""
     }
 }

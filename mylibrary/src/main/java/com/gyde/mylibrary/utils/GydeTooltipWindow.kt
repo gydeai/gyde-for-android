@@ -3,6 +3,7 @@ package com.gyde.mylibrary.utils
 import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
@@ -15,6 +16,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.gyde.mylibrary.R
@@ -146,10 +148,17 @@ internal class GydeTooltipWindow(
             }
         }
 
+        setVolumeDrawable()
         mImgPlayAudio.setOnClickListener {
-            if (voiceOverPath!=null && voiceOverPath.isNotEmpty()) {
-                playAudio(voiceOverPath)
+            if (voiceOverPath != null && voiceOverPath.isNotEmpty()) {
+                if (Util.isPlayVoiceOverEnabled) {
+                    Util.isPlayVoiceOverEnabled = false
+                } else {
+                    Util.isPlayVoiceOverEnabled = true
+                    playAudio(voiceOverPath)
+                }
             }
+            setVolumeDrawable()
         }
     }
 
@@ -202,6 +211,26 @@ internal class GydeTooltipWindow(
         mImageArrow = contentView.findViewById<View>(R.id.tooltip_nav_up) as ImageView
         mNextButton = contentView.findViewById<View>(R.id.next) as Button
         mImgPlayAudio = contentView.findViewById<View>(R.id.img_volume) as ImageView
+        mNextButton.setBackgroundColor(Color.parseColor(Util.btnColor))
+        setVolumeDrawable()
+    }
+
+    private fun setVolumeDrawable() {
+        if (Util.isPlayVoiceOverEnabled) {
+            mImgPlayAudio.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.gyde_ic_volume_off_24
+                )
+            )
+        } else {
+            mImgPlayAudio.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.gyde_ic_volume_up_24
+                )
+            )
+        }
     }
 
     private fun setDescriptionText() {

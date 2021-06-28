@@ -23,7 +23,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_help_article"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FCFCFC">
 
             <ImageView
                 android:id="@+id/img_icon"
