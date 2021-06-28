@@ -163,7 +163,7 @@ internal class GydeTooltipWindow(
     }
 
     private fun playAudio(voiceOverPath: String) {
-        if (!mIsAudioPlaying) {
+        if (!mIsAudioPlaying && Util.isPlayVoiceOverEnabled) {
             mIsAudioPlaying = true
             if (mediaPlayer == null) {
                 mediaPlayer = MediaPlayer()
@@ -172,6 +172,10 @@ internal class GydeTooltipWindow(
                 mediaPlayer?.setDataSource(voiceOverPath)
                 mediaPlayer?.prepare()
                 mediaPlayer?.start()
+                mediaPlayer?.setOnCompletionListener {
+                    mIsAudioPlaying = false
+                    stopAudio()
+                }
             } catch (e: IOException) {
                 Log.e("Audio Exception", "prepare() failed" + e.message)
             }
