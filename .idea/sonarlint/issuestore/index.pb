@@ -46,5 +46,3 @@ h
 8mylibrary/src/main/java/com/gyde/mylibrary/utils/Util.kt,c/3/c32bf7a1a17a9c56392b35189bbda41d44b25dce
 v
 Fmylibrary/src/main/java/com/gyde/mylibrary/screens/GydeHomeActivity.kt,e/d/ed463964050ee95fae33451a2e9f640a8af7d49e
-V
-&mylibrary/src/main/AndroidManifest.xml,9/6/96b1da1bcfd41bc2b1d4c1e14de318643546d7c9
