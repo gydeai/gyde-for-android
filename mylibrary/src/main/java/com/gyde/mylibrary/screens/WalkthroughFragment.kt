@@ -54,7 +54,10 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
+    override fun onResume() {
+        super.onResume()
         mAdapter = WalkthroughAdapter(Util.walkthroughList, this)
         val layoutManager = LinearLayoutManager(requireContext())
         recycler_walkthrough_list.layoutManager = layoutManager
