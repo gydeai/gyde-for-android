@@ -40,6 +40,7 @@ internal class CustomDialogGuideInformation(
         tvGuideDescription.text = flowDescription
         tvTotalSteps.text = String.format("%s Steps", totalSteps)
         btnStartGuide.setBackgroundColor(Color.parseColor(Util.btnColor))
+        tvTitle.setTextColor(Color.parseColor(Util.btnColor))
 
         btnStartGuide.setOnClickListener {
             listener.onStartGuideClicked()

@@ -27,8 +27,6 @@ w
 Gmylibrary/src/main/java/com/gyde/mylibrary/utils/GydeStepDescription.kt,d/d/dd596079bcc40b09572f29802db085da38bdcfce
 |
 Lmylibrary/src/main/java/com/gyde/mylibrary/utils/GydeTooltipArrowPosition.kt,3/0/302b9a82ce28fd9143e2c4d125c59a0d6d7ca761
-P
- app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 Š
 Zmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/HelpArticle.kt,b/f/bf965a03baf8f19bd4f06704f30f5bc3b9eb482a
 :
@@ -40,5 +38,13 @@ Zmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/Hel
 Tmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughsteps/Step.kt,8/5/85b77847c149dd10ddaf5e988ca20a4919471207
 x
 Hmylibrary/src/main/java/com/gyde/mylibrary/adapter/HelpArticleAdapter.kt,0/9/095563f0cd107726e987a95f44aba57a341975e4
-z
-Jmylibrary/src/main/java/com/gyde/mylibrary/screens/HelpArticlesFragment.kt,9/c/9ceae8002de1e7ba5dde1204e1147c035c20acd9
+€
+Pmylibrary/src/main/java/com/gyde/mylibrary/screens/HelpArticleDetailsActivity.kt,5/f/5f5ed4f9127a7c71137f7d6ee942a74dcd14731d
+—
+gmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/WalkthroughsListResponse.kt,0/1/01fb5c49149626eda28a27b0641a86b98fa8e18c
+h
+8mylibrary/src/main/java/com/gyde/mylibrary/utils/Util.kt,c/3/c32bf7a1a17a9c56392b35189bbda41d44b25dce
+v
+Fmylibrary/src/main/java/com/gyde/mylibrary/screens/GydeHomeActivity.kt,e/d/ed463964050ee95fae33451a2e9f640a8af7d49e
+V
+&mylibrary/src/main/AndroidManifest.xml,9/6/96b1da1bcfd41bc2b1d4c1e14de318643546d7c9

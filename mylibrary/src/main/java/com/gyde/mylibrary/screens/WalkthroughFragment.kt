@@ -21,14 +21,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gyde.library.network.retrofit.WalkthroughListInterface
+import com.gyde.mylibrary.R
 import com.gyde.mylibrary.adapter.WalkthroughAdapter
 import com.gyde.mylibrary.listener.WalkthroughListeners
 import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 import com.gyde.mylibrary.network.response.walkthroughlist.WalkthroughsListResponse
 import com.gyde.mylibrary.network.response.walkthroughsteps.WalkthroughStepsResponse
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
-import com.gyde.library.network.retrofit.WalkthroughListInterface
-import com.gyde.mylibrary.R
 import com.gyde.mylibrary.utils.*
 import kotlinx.android.synthetic.main.tab_layout_1.*
 import retrofit2.Call
@@ -37,15 +37,18 @@ import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
+internal class WalkthroughFragment :
+    Fragment(),
+    WalkthroughListeners,
     CustomDialogGuideInformation.GuideInformationDialogListener,
     GydeTooltipWindow.TooTipClickListener {
     private var walkthroughListNew = ArrayList<Walkthrough>()
     private lateinit var mAdapter: WalkthroughAdapter
     private var gydeApiKey: String = ""
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(
             R.layout.tab_layout_1, container, false
@@ -54,10 +57,7 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
 
-    override fun onResume() {
-        super.onResume()
         mAdapter = WalkthroughAdapter(Util.walkthroughList, this)
         val layoutManager = LinearLayoutManager(requireContext())
         recycler_walkthrough_list.layoutManager = layoutManager
@@ -105,7 +105,7 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
 
     private fun filter(text: String) {
         val filteredList: ArrayList<Walkthrough> = ArrayList()
-        for (item in walkthroughListNew) {
+        for (item in Util.walkthroughList) {
             if (item.flowName.lowercase().contains(text.lowercase())) {
                 filteredList.add(item)
             }
@@ -227,7 +227,7 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
     }
 
     override fun onPlayVideoClicked() {
-        //TODO: this will be added once play video integrated on webportal
+        // TODO: this will be added once play video integrated on webportal
     }
 
     override fun onStartGuideClicked() {
@@ -266,7 +266,6 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
                         getActivityName(activityField[activityRecord] as Activity)
                         return activityField[activityRecord] as Activity
                     }
-
                 }
             } catch (e: Exception) {
                 throw RuntimeException(e)
@@ -303,24 +302,27 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
      * from the activity
      */
     private fun openDrawerMenu() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            val tipWindow = GydeTooltipWindow(
-                runningActivity,
-                GydeTooltipPosition.DRAW_BOTTOM,
-                Util.walkthroughSteps[Util.stepCounter].viewId,
-                Util.walkthroughSteps[Util.stepCounter].title,
-                Util.walkthroughSteps[Util.stepCounter].content,
-                if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
-                    "Done"
-                } else {
-                    "Next"
-                },
-                this,
-                Util.walkthroughSteps[Util.stepCounter].voiceOverPath
-            )
-            tipWindow.openDrawerMenu()
-            incrementCounter()
-        }, 500)
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                val tipWindow = GydeTooltipWindow(
+                    runningActivity,
+                    GydeTooltipPosition.DRAW_BOTTOM,
+                    Util.walkthroughSteps[Util.stepCounter].viewId,
+                    Util.walkthroughSteps[Util.stepCounter].title,
+                    Util.walkthroughSteps[Util.stepCounter].content,
+                    if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
+                        "Done"
+                    } else {
+                        "Next"
+                    },
+                    this,
+                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath
+                )
+                tipWindow.openDrawerMenu()
+                incrementCounter()
+            },
+            500
+        )
     }
 
     /**
@@ -328,34 +330,37 @@ internal class WalkthroughFragment : Fragment(), WalkthroughListeners,
      * @param delay Long : If new screen is opening then give some delay to open the new screen
      */
     private fun showToolTip(delay: Long) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            val tipWindow = GydeTooltipWindow(
-                runningActivity,
-                GydeTooltipPosition.DRAW_BOTTOM,
-                Util.walkthroughSteps[Util.stepCounter].viewId,
-                Util.walkthroughSteps[Util.stepCounter].title,
-                Util.walkthroughSteps[Util.stepCounter].content,
-                if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
-                    "Done"
-                } else {
-                    "Next"
-                },
-                this,
-                Util.walkthroughSteps[Util.stepCounter].voiceOverPath
-            )
-            tipWindow.showTooltip(
-                if (Util.stepCounter < Util.walkthroughSteps.size) {
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                val tipWindow = GydeTooltipWindow(
+                    runningActivity,
+                    GydeTooltipPosition.DRAW_BOTTOM,
+                    Util.walkthroughSteps[Util.stepCounter].viewId,
+                    Util.walkthroughSteps[Util.stepCounter].title,
+                    Util.walkthroughSteps[Util.stepCounter].content,
                     if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
-                        3
+                        "Done"
                     } else {
-                        Util.walkthroughSteps[Util.stepCounter + 1].stepDescription
+                        "Next"
+                    },
+                    this,
+                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath
+                )
+                tipWindow.showTooltip(
+                    if (Util.stepCounter < Util.walkthroughSteps.size) {
+                        if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
+                            3
+                        } else {
+                            Util.walkthroughSteps[Util.stepCounter + 1].stepDescription
+                        }
+                    } else {
+                        2
                     }
-                } else {
-                    2
-                }
-            )
-            incrementCounter()
-        }, delay)
+                )
+                incrementCounter()
+            },
+            delay
+        )
     }
 
     /**
