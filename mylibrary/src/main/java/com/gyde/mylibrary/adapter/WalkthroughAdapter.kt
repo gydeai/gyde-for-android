@@ -39,7 +39,7 @@ internal class WalkthroughAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.imgGuideMe.setColorFilter(Color.parseColor(Util.headerColor))
+        holder.imgGuideMe.setColorFilter(Color.parseColor(Util.btnColor))
         holder.imgPlayVideo.setColorFilter(Color.parseColor(Util.headerColor))
         holder.tvLblGuideMe.setTextColor(Color.parseColor(Util.btnColor))
         holder.tvLblPlayVideo.setTextColor(Color.parseColor(Util.headerColor))

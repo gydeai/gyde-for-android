@@ -14,5 +14,7 @@ class Util {
         var headerColor = ""
         var headerTextColor = ""
         var btnColor = ""
+        var deepLinkData: String = ""
+        var isDeepLink = false
     }
 }

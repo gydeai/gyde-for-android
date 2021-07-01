@@ -35,8 +35,18 @@ class GydeHomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gyde_home)
 
+        getIntentData()
         getGydeAppKey()
         getWalkthroughListApiCall()
+    }
+
+    private fun getIntentData() {
+        Util.deepLinkData = try {
+            intent.getStringExtra("GYDE_DEEP_LINK") ?: ""
+        } catch (ex: java.lang.Exception) {
+            ""
+        }
+        Util.isDeepLink = Util.deepLinkData.isNotEmpty()
     }
 
     /**

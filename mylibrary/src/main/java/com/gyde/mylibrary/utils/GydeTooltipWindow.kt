@@ -42,6 +42,7 @@ internal class GydeTooltipWindow(
     private var mTooltipTitle: TextView
     private var mTooltipDescription: TextView
     private var mImgPlayAudio: ImageView
+    private var mImgClose: ImageView
     private var mNextButton: Button
     private var mImageArrow: ImageView
     private var tipWindow: PopupWindow? = null
@@ -162,6 +163,9 @@ internal class GydeTooltipWindow(
             }
             setVolumeDrawable()
         }
+        mImgClose.setOnClickListener {
+            tipWindow?.dismiss()
+        }
     }
 
     private fun playAudio(voiceOverPath: String) {
@@ -217,6 +221,7 @@ internal class GydeTooltipWindow(
         mImageArrow = contentView.findViewById<View>(R.id.tooltip_nav_up) as ImageView
         mNextButton = contentView.findViewById<View>(R.id.next) as Button
         mImgPlayAudio = contentView.findViewById<View>(R.id.img_volume) as ImageView
+        mImgClose = contentView.findViewById(R.id.img_close) as ImageView
         mNextButton.setBackgroundColor(Color.parseColor(Util.btnColor))
         setVolumeDrawable()
     }

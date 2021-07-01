@@ -180,6 +180,14 @@ internal class WalkthroughFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Util.isDeepLink) {
+            getWalkthroughSteps(Util.deepLinkData)
+            Util.isDeepLink = false
+        }
+    }
+
     companion object {
         fun newInstance() = WalkthroughFragment()
     }

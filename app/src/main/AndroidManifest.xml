@@ -14,6 +14,29 @@
         android:theme="@style/Theme.Gyde">
         <activity android:name=".MainActivity">
             <intent-filter>
+                <!--below line is to set the action to our intent to view-->
+                <action android:name="android.intent.action.VIEW" />
+                <!--on below line we are adding a default category to our intent-->
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--on below line we are adding a category to make our app browsable-->
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--on below line we are specifying the host name and
+                    the scheme type from which we will be calling our app-->
+                <data
+                    android:host="www.gyde.ai"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.gyde.ai"
+                    android:scheme="http" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
