@@ -165,6 +165,8 @@ internal class GydeTooltipWindow(
         }
         mImgClose.setOnClickListener {
             tipWindow?.dismiss()
+            Util.walkthroughSteps.clear()
+            Util.stepCounter = 0
         }
     }
 

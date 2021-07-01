@@ -8,7 +8,7 @@ class Util {
     companion object{
         lateinit var helpArticle: List<HelpArticle>
         lateinit var walkthroughList: List<Walkthrough>
-        lateinit var walkthroughSteps: List<Step>
+        var walkthroughSteps = mutableListOf<Step>()
         var stepCounter = 0
         var isPlayVoiceOverEnabled = false
         var headerColor = ""

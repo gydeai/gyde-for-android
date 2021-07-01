@@ -213,7 +213,8 @@ internal class WalkthroughFragment :
                         progressBar_cyclic!!.visibility = View.GONE
                         if (response.isSuccessful) {
                             response.body()?.let {
-                                Util.walkthroughSteps = it.steps
+                                Util.walkthroughSteps.clear()
+                                Util.walkthroughSteps = it.steps.toMutableList()
                                 CustomDialogGuideInformation(
                                     requireContext(),
                                     this@WalkthroughFragment,
