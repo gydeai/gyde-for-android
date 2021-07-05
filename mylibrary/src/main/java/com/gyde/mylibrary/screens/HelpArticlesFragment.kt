@@ -1,6 +1,7 @@
 package com.gyde.mylibrary.screens
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,13 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.gyde.mylibrary.R
 import com.gyde.mylibrary.adapter.HelpArticleAdapter
 import com.gyde.mylibrary.listener.HelpArticleListener
 import com.gyde.mylibrary.network.response.walkthroughlist.HelpArticle
 import com.gyde.mylibrary.utils.Util
-import com.gyde.mylibrary.R
 import kotlinx.android.synthetic.main.tab_layout_2.*
-import java.lang.Exception
 
 internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
     private val helpArticleList = ArrayList<HelpArticle>()
@@ -39,6 +39,10 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
         recycler_help_article.itemAnimator = DefaultItemAnimator()
         recycler_help_article.adapter = mAdapter
 
+        initListeners()
+    }
+
+    private fun initListeners() {
         edt_search_article.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -51,6 +55,12 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
                 return false
             }
         })
+
+        layout_branding.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://gyde.ai")
+            startActivity(intent)
+        }
     }
 
     private fun filter(text: String) {

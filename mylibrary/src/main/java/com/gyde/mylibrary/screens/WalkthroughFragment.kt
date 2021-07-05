@@ -8,6 +8,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -42,7 +43,6 @@ internal class WalkthroughFragment :
     WalkthroughListeners,
     CustomDialogGuideInformation.GuideInformationDialogListener,
     GydeTooltipWindow.TooTipClickListener {
-    private var walkthroughListNew = ArrayList<Walkthrough>()
     private lateinit var mAdapter: WalkthroughAdapter
     private var gydeApiKey: String = ""
     override fun onCreateView(
@@ -66,6 +66,15 @@ internal class WalkthroughFragment :
 
         getAppIdFromManifest()
         showWalkthroughList()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        layout_branding.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://gyde.ai")
+            startActivity(intent)
+        }
 
         edt_search.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
@@ -213,7 +222,11 @@ internal class WalkthroughFragment :
                         progressBar_cyclic!!.visibility = View.GONE
                         if (response.isSuccessful) {
                             response.body()?.let {
+
                                 Util.walkthroughSteps.clear()
+                                Util.stepCounter = 0
+                                Util.isPlayVoiceOverEnabled = false
+
                                 Util.walkthroughSteps = it.steps.toMutableList()
                                 CustomDialogGuideInformation(
                                     requireContext(),
@@ -306,32 +319,12 @@ internal class WalkthroughFragment :
         }
     }
 
-    /**
-     * This function will open the drawer menu
-     * from the activity
-     */
-    private fun openDrawerMenu() {
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                val tipWindow = GydeTooltipWindow(
-                    runningActivity,
-                    GydeTooltipPosition.DRAW_BOTTOM,
-                    Util.walkthroughSteps[Util.stepCounter].viewId,
-                    Util.walkthroughSteps[Util.stepCounter].title,
-                    Util.walkthroughSteps[Util.stepCounter].content,
-                    if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
-                        "Done"
-                    } else {
-                        "Next"
-                    },
-                    this,
-                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath
-                )
-                tipWindow.openDrawerMenu()
-                incrementCounter()
-            },
-            500
-        )
+    private fun getToolTipPosition(): GydeTooltipPosition {
+        return when (Util.walkthroughSteps[Util.stepCounter].placement) {
+            "top" -> GydeTooltipPosition.DRAW_TOP
+            "bottom" -> GydeTooltipPosition.DRAW_BOTTOM
+            else -> GydeTooltipPosition.DRAW_BOTTOM_CENTER
+        }
     }
 
     /**
@@ -343,7 +336,7 @@ internal class WalkthroughFragment :
             {
                 val tipWindow = GydeTooltipWindow(
                     runningActivity,
-                    GydeTooltipPosition.DRAW_BOTTOM,
+                    getToolTipPosition(),
                     Util.walkthroughSteps[Util.stepCounter].viewId,
                     Util.walkthroughSteps[Util.stepCounter].title,
                     Util.walkthroughSteps[Util.stepCounter].content,
@@ -397,9 +390,41 @@ internal class WalkthroughFragment :
         }
     }
 
+    /**
+     * This method will increment the step counter.
+     * and save it to Util.stepCounter
+     */
     private fun incrementCounter() {
         if (Util.stepCounter < Util.walkthroughSteps.size) {
             Util.stepCounter += 1
         }
+    }
+
+    /**
+     * This function will open the drawer menu
+     * from the activity
+     */
+    private fun openDrawerMenu() {
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                val tipWindow = GydeTooltipWindow(
+                    runningActivity,
+                    getToolTipPosition(),
+                    Util.walkthroughSteps[Util.stepCounter].viewId,
+                    Util.walkthroughSteps[Util.stepCounter].title,
+                    Util.walkthroughSteps[Util.stepCounter].content,
+                    if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
+                        "Done"
+                    } else {
+                        "Next"
+                    },
+                    this,
+                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath
+                )
+                tipWindow.openDrawerMenu()
+                incrementCounter()
+            },
+            500
+        )
     }
 }

@@ -15,12 +15,19 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.*
+import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.gyde.mylibrary.R
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.registerEventListener
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.io.IOException
+
 
 internal class GydeTooltipWindow(
     private var context: Context,
@@ -44,7 +51,7 @@ internal class GydeTooltipWindow(
     private var mImgPlayAudio: ImageView
     private var mImgClose: ImageView
     private var mNextButton: Button
-    private var mImageArrow: ImageView
+    private var mImageArrow: TextView
     private var tipWindow: PopupWindow? = null
     private var inflater: LayoutInflater
     private var mIsAudioPlaying: Boolean = false
@@ -93,8 +100,7 @@ internal class GydeTooltipWindow(
                 mImageArrow.layoutParams = layoutParams
             }
         }
-        tipWindow?.height = ActionBar.LayoutParams.WRAP_CONTENT
-        tipWindow?.width = ActionBar.LayoutParams.WRAP_CONTENT
+
         tipWindow?.isOutsideTouchable = false
         tipWindow?.isTouchable = true
         tipWindow?.isFocusable = false
@@ -120,14 +126,56 @@ internal class GydeTooltipWindow(
         var positionX = 0
         var positionY = 0
         when (toolTipPosition) {
-            GydeTooltipPosition.DRAW_BOTTOM -> {
+            GydeTooltipPosition.DRAW_BOTTOM,
+            GydeTooltipPosition.DRAW_BOTTOM_CENTER -> {
                 positionX = anchorRect.centerX() - (contentViewWidth - contentViewWidth / 2)
                 positionY = anchorRect.bottom - anchorRect.height() / 2 + 10
             }
-            GydeTooltipPosition.DRAW_TOP -> {
-                positionX = anchorRect.centerX() - (contentViewWidth - contentViewWidth / 2)
-                positionY = anchorRect.top - anchorRect.height()
+            GydeTooltipPosition.DRAW_BOTTOM_LEFT -> {
+                positionX = anchorRect.left
+                positionY = anchorRect.bottom - anchorRect.height() / 2 + 10
+
+                (mImageArrow.layoutParams as LinearLayout.LayoutParams).let {
+                    it.gravity = Gravity.START
+                    it.marginStart = 40
+                }
             }
+            GydeTooltipPosition.DRAW_BOTTOM_RIGHT -> {
+                positionX = anchorRect.right - contentViewWidth
+                positionY = anchorRect.bottom - anchorRect.height() / 2 + 10
+
+                (mImageArrow.layoutParams as LinearLayout.LayoutParams).let {
+                    it.gravity = Gravity.END
+                    it.marginEnd = 40
+                }
+            }
+
+            GydeTooltipPosition.DRAW_TOP,
+            GydeTooltipPosition.DRAW_TOP_CENTER -> {
+                positionX = anchorRect.centerX() - (contentViewWidth - contentViewWidth / 2)
+                positionY = anchorRect.top - contentViewHeight
+            }
+
+            GydeTooltipPosition.DRAW_TOP_LEFT -> {
+                positionX = anchorRect.left
+                positionY = anchorRect.top - contentViewHeight
+
+                (mImageArrow.layoutParams as LinearLayout.LayoutParams).let {
+                    it.gravity = Gravity.START
+                    it.marginStart = 40
+                }
+            }
+
+            GydeTooltipPosition.DRAW_TOP_RIGHT -> {
+                positionX = anchorRect.right - contentViewWidth
+                positionY = anchorRect.top - contentViewHeight
+
+                (mImageArrow.layoutParams as LinearLayout.LayoutParams).let {
+                    it.gravity = Gravity.END
+                    it.marginEnd = 40
+                }
+            }
+
             GydeTooltipPosition.DRAW_LEFT -> {
                 DRAW_RIGHT@ positionX = anchorRect.left - contentViewWidth - 30
                 positionY = anchorRect.top
@@ -142,16 +190,13 @@ internal class GydeTooltipWindow(
             positionY
         )
         setDescriptionText()
-        mNextButton.setOnClickListener { v: View? ->
-            tipWindow?.dismiss()
-            nextClickListener.nextButtonClicked()
-            if (nextStepDescription == 2) {
-                (context as Activity).finish()
-            }
-        }
-
         setVolumeDrawable()
         playAudio(voiceOverPath ?: "")
+
+        initListeners(nextStepDescription, positionX, positionY)
+    }
+
+    private fun initListeners(nextStepDescription: Int, positionX: Int, positionY: Int) {
         mImgPlayAudio.setOnClickListener {
             if (voiceOverPath != null && voiceOverPath.isNotEmpty()) {
                 if (Util.isPlayVoiceOverEnabled) {
@@ -163,13 +208,171 @@ internal class GydeTooltipWindow(
             }
             setVolumeDrawable()
         }
+
         mImgClose.setOnClickListener {
             tipWindow?.dismiss()
             Util.walkthroughSteps.clear()
             Util.stepCounter = 0
         }
+
+        mNextButton.setOnClickListener {
+            tipWindow?.dismiss()
+            nextClickListener.nextButtonClicked()
+            if (nextStepDescription == 2) {
+                (context as Activity).finish()
+            }
+            unregisterKeyBoardEventListener();
+        }
+
+        getKeyboardDimensions(positionX, positionY)
+        registerKeyBoardEventListener(nextStepDescription, positionX, positionY)
     }
 
+    private fun registerKeyBoardEventListener(
+        nextStepDescription: Int,
+        positionX: Int,
+        positionY: Int
+    ) {
+        (context as Activity).let {
+            KeyboardVisibilityEvent.setEventListener(
+                it
+            ) { isOpen ->
+                if (isOpen) {
+                    Log.e("keyboard ", "Keyboard is opened")
+//                    onKeyBoardOpenRotateToolTip(nextStepDescription)
+                } else {
+                    Log.e("keyboard ", "Keyboard is closed")
+                }
+            }
+        }
+    }
+
+    private fun getKeyboardDimensions(positionX: Int, positionY: Int) {
+        val mRootWindow: Window = (context as Activity).window
+        val mRootView: View = mRootWindow.decorView.findViewById(android.R.id.content)
+        mRootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val r = Rect()
+            val view: View = mRootWindow.decorView
+            view.getWindowVisibleDisplayFrame(r)
+            // r.left, r.top, r.right, r.bottom
+            val screenPos = IntArray(2)
+            contentView.getLocationInWindow(screenPos)
+
+            if (positionY > r.top && positionY < r.bottom) {
+                Log.e("keyboard", "overlapped")
+            } else {
+                Log.e("keyboard", "not overlapped")
+            }
+        }
+    }
+
+    /**
+     * This method will revert the bottom tooltip to top tooltip
+     * only when keyboard is opened and keyboard is wrapping by tooltip.
+     * @param nextStepDescription Int : the next button action is dependent on this status
+     */
+    private fun onKeyBoardOpenRotateToolTip(nextStepDescription: Int) {
+        tipWindow?.dismiss()
+
+        var layout = R.layout.tooltip_top_layout
+        contentView = inflater.inflate(layout, null)
+        mTooltipTitle = contentView.findViewById<View>(R.id.tooltip_title) as TextView
+        mTooltipDescription = contentView.findViewById<View>(R.id.tv_tooltip_content) as TextView
+        mImageArrow = contentView.findViewById<View>(R.id.tooltip_nav_up) as TextView
+        mNextButton = contentView.findViewById<View>(R.id.next) as Button
+        mImgPlayAudio = contentView.findViewById<View>(R.id.img_volume) as ImageView
+        mImgClose = contentView.findViewById(R.id.img_close) as ImageView
+        mNextButton.setBackgroundColor(Color.parseColor(Util.btnColor))
+        setVolumeDrawable()
+
+        tipWindow?.isOutsideTouchable = false
+        tipWindow?.isTouchable = true
+        tipWindow?.isFocusable = false
+        tipWindow?.setBackgroundDrawable(BitmapDrawable())
+        tipWindow?.contentView = contentView
+        val screenPos = IntArray(2)
+        view.getLocationOnScreen(screenPos)
+
+        val anchorRect = Rect(
+            screenPos[0], screenPos[1],
+            screenPos[0] +
+                    view.width,
+            screenPos[1] + view.height
+        )
+
+        contentView.measure(
+            ActionBar.LayoutParams.WRAP_CONTENT,
+            ActionBar.LayoutParams.WRAP_CONTENT
+        )
+        val contentViewHeight = contentView.measuredHeight
+        val contentViewWidth = contentView.measuredWidth
+
+        var positionX = 0
+        var positionY = 0
+        when (toolTipPosition) {
+            GydeTooltipPosition.DRAW_BOTTOM,
+            GydeTooltipPosition.DRAW_BOTTOM_CENTER -> {
+                positionX = anchorRect.centerX() - (contentViewWidth - contentViewWidth / 2)
+                positionY = anchorRect.top - contentViewHeight
+            }
+
+            GydeTooltipPosition.DRAW_BOTTOM_LEFT -> {
+                positionX = anchorRect.left
+                positionY = anchorRect.top - contentViewHeight
+
+                (mImageArrow.layoutParams as LinearLayout.LayoutParams).let {
+                    it.gravity = Gravity.START
+                    it.marginStart = 40
+                }
+            }
+
+            GydeTooltipPosition.DRAW_BOTTOM_RIGHT -> {
+                positionX = anchorRect.right - contentViewWidth
+                positionY = anchorRect.top - contentViewHeight
+
+                (mImageArrow.layoutParams as LinearLayout.LayoutParams).let {
+                    it.gravity = Gravity.END
+                    it.marginEnd = 40
+                }
+            }
+        }
+        tipWindow?.showAtLocation(
+            view, Gravity.NO_GRAVITY, positionX,
+            positionY
+        )
+        setDescriptionText()
+        setVolumeDrawable()
+        playAudio(voiceOverPath ?: "")
+
+        initListeners(nextStepDescription, positionX, positionY)
+        showEditTextFocus()
+
+    }
+
+    private fun showEditTextFocus() {
+        if (view is EditText || view is AppCompatEditText) {
+            view.requestFocus()
+        }
+    }
+
+    /**
+     * Unregister the keyboard open listener
+     */
+    private fun unregisterKeyBoardEventListener() {
+        val unRegistrar = registerEventListener(
+            (context as Activity),
+            KeyboardVisibilityEventListener {
+                // some code depending on keyboard visiblity status
+            })
+
+        unRegistrar.unregister()
+    }
+
+    /**
+     * Play audio voice over path provided from json.
+     * It plays the URL string
+     * @param voiceOverPath String : URL string received from json from playing sound
+     */
     private fun playAudio(voiceOverPath: String) {
         if (!mIsAudioPlaying && Util.isPlayVoiceOverEnabled && voiceOverPath.isNotEmpty()) {
             mIsAudioPlaying = true
@@ -212,15 +415,23 @@ internal class GydeTooltipWindow(
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         var layout = 0
         layout = when (toolTipPosition) {
-            GydeTooltipPosition.DRAW_BOTTOM -> R.layout.tooltip_bottom_layout
-            GydeTooltipPosition.DRAW_TOP -> R.layout.tooltip_top_layout
+            GydeTooltipPosition.DRAW_BOTTOM,
+            GydeTooltipPosition.DRAW_BOTTOM_LEFT,
+            GydeTooltipPosition.DRAW_BOTTOM_CENTER,
+            GydeTooltipPosition.DRAW_BOTTOM_RIGHT -> R.layout.tooltip_bottom_layout
+
+            GydeTooltipPosition.DRAW_TOP,
+            GydeTooltipPosition.DRAW_TOP_LEFT,
+            GydeTooltipPosition.DRAW_TOP_RIGHT,
+            GydeTooltipPosition.DRAW_TOP_CENTER -> R.layout.tooltip_top_layout
+
             GydeTooltipPosition.DRAW_LEFT -> R.layout.tooltip_left_layout
             GydeTooltipPosition.DRAW_RIGHT -> R.layout.tooltip_right_layout
         }
         contentView = inflater.inflate(layout, null)
         mTooltipTitle = contentView.findViewById<View>(R.id.tooltip_title) as TextView
         mTooltipDescription = contentView.findViewById<View>(R.id.tv_tooltip_content) as TextView
-        mImageArrow = contentView.findViewById<View>(R.id.tooltip_nav_up) as ImageView
+        mImageArrow = contentView.findViewById<View>(R.id.tooltip_nav_up) as TextView
         mNextButton = contentView.findViewById<View>(R.id.next) as Button
         mImgPlayAudio = contentView.findViewById<View>(R.id.img_volume) as ImageView
         mImgClose = contentView.findViewById(R.id.img_close) as ImageView
@@ -248,6 +459,7 @@ internal class GydeTooltipWindow(
 
     private fun setDescriptionText() {
         mTooltipTitle.text = String.format("%s", titleText)
+        mTooltipTitle.setTextColor(Color.parseColor(Util.btnColor))
         mTooltipDescription.text = String.format("%s", descriptionText)
         mNextButton.text = String.format("%s", buttonText)
     }
