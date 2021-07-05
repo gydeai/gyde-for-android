@@ -38,9 +38,9 @@
             android:gravity="center"
             android:layout_marginBottom="5dp">
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/gyde_ic_video"/>
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/gyde_logo"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
