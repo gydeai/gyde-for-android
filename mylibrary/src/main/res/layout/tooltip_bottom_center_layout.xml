@@ -25,7 +25,8 @@
         android:orientation="vertical"
         android:padding="10dp"
         card_view:cardCornerRadius="5dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -56,10 +57,10 @@
 
             <TextView
                 android:id="@+id/tooltip_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingLeft="8dp"
+                android:gravity="start"
+                android:paddingLeft="12dp"
                 android:paddingTop="5dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
@@ -73,10 +74,10 @@
 
             <TextView
                 android:id="@+id/tv_tooltip_content"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingLeft="8dp"
+                android:gravity="start"
+                android:paddingLeft="12dp"
                 android:paddingTop="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
@@ -95,6 +96,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/gyde_rounded_buttons"
                 tools:text="Next"
+                android:gravity="center"
                 android:textColor="@color/white"
                 android:layout_marginBottom="5dp"
                 card_view:layout_constraintTop_toBottomOf="@id/tv_tooltip_content"
