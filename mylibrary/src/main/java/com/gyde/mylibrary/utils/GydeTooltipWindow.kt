@@ -4,18 +4,17 @@ import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.*
 import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
@@ -56,6 +55,7 @@ internal class GydeTooltipWindow(
     private var inflater: LayoutInflater
     private var mIsAudioPlaying: Boolean = false
     private var mediaPlayer: MediaPlayer? = null
+    private var mIsRotated = false
 
     companion object {
         private const val MSG_DISMISS_TOOLTIP = 5000
@@ -192,11 +192,20 @@ internal class GydeTooltipWindow(
         setDescriptionText()
         setVolumeDrawable()
         playAudio(voiceOverPath ?: "")
-
         initListeners(nextStepDescription, positionX, positionY)
     }
 
-    private fun initListeners(nextStepDescription: Int, positionX: Int, positionY: Int) {
+    /**
+     * Initialize all click listeners.
+     * @param nextStepDescription Int
+     * @param tooltipPositionX Int
+     * @param tooltipPositionY Int
+     */
+    private fun initListeners(
+        nextStepDescription: Int,
+        tooltipPositionX: Int,
+        tooltipPositionY: Int
+    ) {
         mImgPlayAudio.setOnClickListener {
             if (voiceOverPath != null && voiceOverPath.isNotEmpty()) {
                 if (Util.isPlayVoiceOverEnabled) {
@@ -218,14 +227,25 @@ internal class GydeTooltipWindow(
         mNextButton.setOnClickListener {
             tipWindow?.dismiss()
             nextClickListener.nextButtonClicked()
-            if (nextStepDescription == 2) {
+            if (nextStepDescription == GydeStepDescription.OPEN_NEW_SCREEN.value) {
                 (context as Activity).finish()
             }
             unregisterKeyBoardEventListener();
         }
 
-        getKeyboardDimensions(positionX, positionY)
-        registerKeyBoardEventListener(nextStepDescription, positionX, positionY)
+//        getKeyboardDimensions(tooltipPositionX, tooltipPositionY)
+        registerKeyBoardEventListener(nextStepDescription, tooltipPositionX, tooltipPositionY)
+        disableViewClickListener(nextStepDescription)
+    }
+
+    /**
+     * Disable click listener if the next step is screen navigation
+     * @param nextStepDescription Int
+     */
+    private fun disableViewClickListener(nextStepDescription: Int) {
+        if (nextStepDescription == GydeStepDescription.OPEN_NEW_SCREEN.value) {
+            view.isClickable = false
+        }
     }
 
     private fun registerKeyBoardEventListener(
@@ -239,9 +259,10 @@ internal class GydeTooltipWindow(
             ) { isOpen ->
                 if (isOpen) {
                     Log.e("keyboard ", "Keyboard is opened")
-//                    onKeyBoardOpenRotateToolTip(nextStepDescription)
+                    getWindowDimension(positionY, nextStepDescription)
                 } else {
                     Log.e("keyboard ", "Keyboard is closed")
+                    getWindowDimension(positionY, nextStepDescription)
                 }
             }
         }
@@ -258,11 +279,37 @@ internal class GydeTooltipWindow(
             val screenPos = IntArray(2)
             contentView.getLocationInWindow(screenPos)
 
-            if (positionY > r.top && positionY < r.bottom) {
-                Log.e("keyboard", "overlapped")
-            } else {
-                Log.e("keyboard", "not overlapped")
-            }
+//            if (positionY > r.top && positionY < r.bottom) {
+//                Log.e("keyboard", "overlapped")
+//                var height = mRootView.height - r.bottom
+//                Log.e("height", "Height : $height")
+//            } else
+//                Log.e("keyboard", "not overlapped")
+//            }
+        }
+    }
+
+    private fun getWindowDimension(positionY: Int, nextStepDescription: Int) {
+        val outMetrics = DisplayMetrics()
+        var currentDisplay: Display?
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            currentDisplay = (context as Activity).display
+            currentDisplay?.getRealMetrics(outMetrics)
+        } else {
+            @Suppress("DEPRECATION")
+            currentDisplay = (context as Activity).windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            currentDisplay.getMetrics(outMetrics)
+        }
+
+
+        val maxX: Int = outMetrics.widthPixels
+        val maxY: Int = outMetrics.heightPixels
+        Log.e("abc", "maxX : $maxX ::: maxY : $maxY")
+
+        if (positionY > (maxY/2) && !mIsRotated) {
+            onKeyBoardOpenRotateToolTip(nextStepDescription)
         }
     }
 
@@ -273,6 +320,7 @@ internal class GydeTooltipWindow(
      */
     private fun onKeyBoardOpenRotateToolTip(nextStepDescription: Int) {
         tipWindow?.dismiss()
+        mIsRotated = true
 
         var layout = R.layout.tooltip_top_layout
         contentView = inflater.inflate(layout, null)
@@ -346,6 +394,7 @@ internal class GydeTooltipWindow(
 
         initListeners(nextStepDescription, positionX, positionY)
         showEditTextFocus()
+        unregisterKeyBoardEventListener()
 
     }
 
