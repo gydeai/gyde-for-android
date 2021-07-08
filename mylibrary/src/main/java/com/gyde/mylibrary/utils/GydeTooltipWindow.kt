@@ -4,7 +4,6 @@ import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
@@ -15,6 +14,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
@@ -230,10 +230,10 @@ internal class GydeTooltipWindow(
             if (nextStepDescription == GydeStepDescription.OPEN_NEW_SCREEN.value) {
                 (context as Activity).finish()
             }
-            unregisterKeyBoardEventListener();
+            unregisterKeyBoardEventListener()
+            hideKeyboard((context as Activity))
         }
 
-//        getKeyboardDimensions(tooltipPositionX, tooltipPositionY)
         registerKeyBoardEventListener(nextStepDescription, tooltipPositionX, tooltipPositionY)
         disableViewClickListener(nextStepDescription)
     }
@@ -265,27 +265,6 @@ internal class GydeTooltipWindow(
                     getWindowDimension(positionY, nextStepDescription)
                 }
             }
-        }
-    }
-
-    private fun getKeyboardDimensions(positionX: Int, positionY: Int) {
-        val mRootWindow: Window = (context as Activity).window
-        val mRootView: View = mRootWindow.decorView.findViewById(android.R.id.content)
-        mRootView.viewTreeObserver.addOnGlobalLayoutListener {
-            val r = Rect()
-            val view: View = mRootWindow.decorView
-            view.getWindowVisibleDisplayFrame(r)
-            // r.left, r.top, r.right, r.bottom
-            val screenPos = IntArray(2)
-            contentView.getLocationInWindow(screenPos)
-
-//            if (positionY > r.top && positionY < r.bottom) {
-//                Log.e("keyboard", "overlapped")
-//                var height = mRootView.height - r.bottom
-//                Log.e("height", "Height : $height")
-//            } else
-//                Log.e("keyboard", "not overlapped")
-//            }
         }
     }
 
@@ -415,6 +394,16 @@ internal class GydeTooltipWindow(
             })
 
         unRegistrar.unregister()
+    }
+
+    private fun hideKeyboard(activity: Activity) {
+        val imm: InputMethodManager =
+            activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity.currentFocus
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     /**
