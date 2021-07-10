@@ -5,39 +5,39 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical"
+    android:background="@android:color/transparent"
     android:elevation="5dp"
-    android:background="@android:color/transparent">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tooltip_nav_up"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_gravity="center"
-        android:background="@drawable/gyde_nav_up"/>
+        android:background="@drawable/gyde_nav_up" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="@color/white"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:elevation="15dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        card_view:cardCornerRadius="5dp"
-        android:layout_gravity="center"
         android:minWidth="250dp"
         android:minHeight="150dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp">
+        android:orientation="vertical"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
             android:minWidth="250dp"
-            android:minHeight="150dp">
+            android:minHeight="150dp"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_close"
@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
+                android:contentDescription="@string/close_tooltip"
                 android:src="@drawable/gyde_ic_close"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/gyde_ic_volume_up_24"
+                android:contentDescription="@string/volume_toggle_option"
+                android:src="@drawable/gyde_ic_volume_off_24"
                 card_view:layout_constraintEnd_toStartOf="@+id/img_close"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -63,67 +65,68 @@
                 android:id="@+id/tooltip_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/proxima_nova"
                 android:gravity="start"
-                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
                 android:paddingTop="5dp"
-                android:paddingRight="8dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/purple_500"
                 android:textSize="@dimen/tooltip_txt"
                 android:textStyle="bold"
-                tools:text="Magic"
-                android:fontFamily="@font/proxima_nova"
-                card_view:layout_constraintTop_toBottomOf="@id/img_volume"
+                card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintEnd_toEndOf="parent"/>
+                card_view:layout_constraintTop_toBottomOf="@id/img_volume"
+                tools:text="Magic" />
 
             <TextView
                 android:id="@+id/tv_tooltip_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/proxima_nova"
                 android:gravity="start"
-                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
                 android:paddingTop="8dp"
-                android:paddingRight="8dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="8dp"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="normal"
-                tools:text="Magic"
-                android:fontFamily="@font/proxima_nova"
-                card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@id/tooltip_title"/>
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@id/tooltip_title"
+                tools:text="Magic" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/next"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/gyde_rounded_buttons"
-                tools:text="Next"
-                android:gravity="center"
-                android:fontFamily="@font/proxima_nova"
-                android:textColor="@color/white"
                 android:layout_marginBottom="5dp"
-                card_view:layout_constraintTop_toBottomOf="@id/tv_tooltip_content"
+                android:background="@drawable/gyde_rounded_buttons"
+                android:fontFamily="@font/proxima_nova"
+                android:gravity="center"
+                android:textColor="@color/white"
+                card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintBottom_toBottomOf="parent"/>
+                card_view:layout_constraintTop_toBottomOf="@id/tv_tooltip_content"
+                tools:text="Next" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintEnd_toStartOf="@id/next"
-                card_view:layout_constraintBottom_toBottomOf="@id/next"
-                android:text="12 of 20"
-                android:layout_marginEnd="10dp"
-                android:paddingEnd="10dp"
-                android:fontFamily="@font/proxima_nova"
-                android:textSize="15sp"
-                android:textColor="#b0b0b0"
                 android:layout_marginStart="2dp"
-                android:visibility="invisible"/>
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/proxima_nova"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp"
+                android:textColor="#b0b0b0"
+                android:textSize="15sp"
+                android:visibility="invisible"
+                card_view:layout_constraintBottom_toBottomOf="@id/next"
+                card_view:layout_constraintEnd_toStartOf="@id/next"
+                card_view:layout_constraintStart_toStartOf="parent"
+                tools:text="12 of 20" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

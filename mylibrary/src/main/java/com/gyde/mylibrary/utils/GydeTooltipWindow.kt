@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
@@ -69,6 +68,10 @@ internal class GydeTooltipWindow(
         }
     }
 
+    /**
+     * Show tooltip according the anchor point
+     * @param nextStepDescription Int : requires to guess Next button or done button
+     */
     fun showTooltip(nextStepDescription: Int) {
         if (!viewId.isNullOrEmpty()) {
             val resID = context.resources.getIdentifier(viewId, "id", context.packageName)
@@ -99,12 +102,18 @@ internal class GydeTooltipWindow(
                 layoutParams.setMargins(0, 0, 0, 0)
                 mImageArrow.layoutParams = layoutParams
             }
+            else -> {
+                val layoutParams = LinearLayout.LayoutParams(height, height)
+                layoutParams.gravity = Gravity.CENTER
+                layoutParams.setMargins(0, 0, 10, 1)
+                mImageArrow.layoutParams = layoutParams
+            }
         }
 
         tipWindow?.isOutsideTouchable = false
         tipWindow?.isTouchable = true
         tipWindow?.isFocusable = false
-        tipWindow?.setBackgroundDrawable(BitmapDrawable())
+        tipWindow?.setBackgroundDrawable(null)
         tipWindow?.contentView = contentView
         val screenPos = IntArray(2)
         view.getLocationOnScreen(screenPos)
@@ -192,18 +201,16 @@ internal class GydeTooltipWindow(
         setDescriptionText()
         setVolumeDrawable()
         playAudio(voiceOverPath ?: "")
-        initListeners(nextStepDescription, positionX, positionY)
+        initListeners(nextStepDescription, positionY)
     }
 
     /**
-     * Initialize all click listeners.
+     * Initialize all click listeners of tooltip.
      * @param nextStepDescription Int
-     * @param tooltipPositionX Int
      * @param tooltipPositionY Int
      */
     private fun initListeners(
         nextStepDescription: Int,
-        tooltipPositionX: Int,
         tooltipPositionY: Int
     ) {
         mImgPlayAudio.setOnClickListener {
@@ -234,7 +241,7 @@ internal class GydeTooltipWindow(
             hideKeyboard((context as Activity))
         }
 
-        registerKeyBoardEventListener(nextStepDescription, tooltipPositionX, tooltipPositionY)
+        registerKeyBoardEventListener(nextStepDescription, tooltipPositionY)
         disableViewClickListener(nextStepDescription)
     }
 
@@ -250,7 +257,6 @@ internal class GydeTooltipWindow(
 
     private fun registerKeyBoardEventListener(
         nextStepDescription: Int,
-        positionX: Int,
         positionY: Int
     ) {
         (context as Activity).let {
@@ -270,7 +276,7 @@ internal class GydeTooltipWindow(
 
     private fun getWindowDimension(positionY: Int, nextStepDescription: Int) {
         val outMetrics = DisplayMetrics()
-        var currentDisplay: Display?
+        val currentDisplay: Display?
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             currentDisplay = (context as Activity).display
@@ -287,7 +293,7 @@ internal class GydeTooltipWindow(
         val maxY: Int = outMetrics.heightPixels
         Log.e("abc", "maxX : $maxX ::: maxY : $maxY")
 
-        if (positionY > (maxY/2) && !mIsRotated) {
+        if (positionY > (maxY / 2) && !mIsRotated) {
             onKeyBoardOpenRotateToolTip(nextStepDescription)
         }
     }
@@ -301,7 +307,7 @@ internal class GydeTooltipWindow(
         tipWindow?.dismiss()
         mIsRotated = true
 
-        var layout = R.layout.tooltip_top_layout
+        val layout = R.layout.tooltip_top_layout
         contentView = inflater.inflate(layout, null)
         mTooltipTitle = contentView.findViewById<View>(R.id.tooltip_title) as TextView
         mTooltipDescription = contentView.findViewById<View>(R.id.tv_tooltip_content) as TextView
@@ -315,7 +321,7 @@ internal class GydeTooltipWindow(
         tipWindow?.isOutsideTouchable = false
         tipWindow?.isTouchable = true
         tipWindow?.isFocusable = false
-        tipWindow?.setBackgroundDrawable(BitmapDrawable())
+        tipWindow?.setBackgroundDrawable(null)
         tipWindow?.contentView = contentView
         val screenPos = IntArray(2)
         view.getLocationOnScreen(screenPos)
@@ -362,6 +368,10 @@ internal class GydeTooltipWindow(
                     it.marginEnd = 40
                 }
             }
+
+            else -> {
+                //not required...
+            }
         }
         tipWindow?.showAtLocation(
             view, Gravity.NO_GRAVITY, positionX,
@@ -371,7 +381,7 @@ internal class GydeTooltipWindow(
         setVolumeDrawable()
         playAudio(voiceOverPath ?: "")
 
-        initListeners(nextStepDescription, positionX, positionY)
+        initListeners(nextStepDescription, positionY)
         showEditTextFocus()
         unregisterKeyBoardEventListener()
 
@@ -390,7 +400,7 @@ internal class GydeTooltipWindow(
         val unRegistrar = registerEventListener(
             (context as Activity),
             KeyboardVisibilityEventListener {
-                // some code depending on keyboard visiblity status
+                // some code depending on keyboard visibility status
             })
 
         unRegistrar.unregister()
@@ -451,8 +461,7 @@ internal class GydeTooltipWindow(
         this.tipWindow = PopupWindow(context)
         inflater = context
             .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        var layout = 0
-        layout = when (toolTipPosition) {
+        val layout: Int = when (toolTipPosition) {
             GydeTooltipPosition.DRAW_BOTTOM,
             GydeTooltipPosition.DRAW_BOTTOM_LEFT,
             GydeTooltipPosition.DRAW_BOTTOM_CENTER,
@@ -482,14 +491,14 @@ internal class GydeTooltipWindow(
             mImgPlayAudio.setImageDrawable(
                 AppCompatResources.getDrawable(
                     context,
-                    R.drawable.gyde_ic_volume_off_24
+                    R.drawable.gyde_ic_volume_up_24
                 )
             )
         } else {
             mImgPlayAudio.setImageDrawable(
                 AppCompatResources.getDrawable(
                     context,
-                    R.drawable.gyde_ic_volume_up_24
+                    R.drawable.gyde_ic_volume_off_24
                 )
             )
         }

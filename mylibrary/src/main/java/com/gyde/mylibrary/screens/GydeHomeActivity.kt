@@ -1,33 +1,31 @@
 package com.gyde.mylibrary.screens
 
 import android.app.Dialog
-import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.gyde.library.network.retrofit.WalkthroughListInterface
 import com.gyde.mylibrary.R
 import com.gyde.mylibrary.adapter.ViewPagerAdapter
 import com.gyde.mylibrary.network.response.walkthroughlist.WalkthroughsListResponse
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
+import com.gyde.mylibrary.network.retrofit.WalkthroughListInterface
+import com.gyde.mylibrary.utils.NetworkUtils
 import com.gyde.mylibrary.utils.Util
 import kotlinx.android.synthetic.main.activity_gyde_home.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+
 
 class GydeHomeActivity : AppCompatActivity() {
     private var gydeApiKey: String = ""
@@ -38,6 +36,18 @@ class GydeHomeActivity : AppCompatActivity() {
         getIntentData()
         getGydeAppKey()
         getWalkthroughListApiCall()
+        initializeListeners()
+
+    }
+
+    private fun initializeListeners() {
+        img_menu.setOnClickListener {
+            val menu = PopupMenu(this@GydeHomeActivity, it)
+            for (s in Util.OPTIONS_MENU) {
+                menu.menu.add(s)
+            }
+            menu.show()
+        }
     }
 
     private fun getIntentData() {
@@ -81,9 +91,13 @@ class GydeHomeActivity : AppCompatActivity() {
                 pager.setCurrentItem(tab!!.position, true)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                //this will not require
+            }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //this will not require
+            }
 
         })
     }
@@ -102,24 +116,9 @@ class GydeHomeActivity : AppCompatActivity() {
         })
     }
 
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw = connectivityManager.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-                else -> false
-            }
-        } else {
-            return connectivityManager.activeNetworkInfo?.isConnected ?: false
-        }
-    }
-
+    /**
+     * Show internet connectivity dialog if network not available
+     */
     private fun showDialog() {
         val dialog = Dialog(this@GydeHomeActivity)
         dialog.setCancelable(false)
@@ -136,9 +135,13 @@ class GydeHomeActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Get all walkthrough list api
+     * in this api we will get walkthrough list and help article list
+     */
     private fun getWalkthroughListApiCall() {
 
-        if (!isNetworkAvailable(this@GydeHomeActivity)) {
+        if (!NetworkUtils.isNetworkAvailable(this@GydeHomeActivity)) {
             progressBar_cyclic!!.visibility = View.GONE
             showDialog()
         } else {
@@ -180,6 +183,12 @@ class GydeHomeActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Set background color of activity
+     * @param headerColor String : This is header background color
+     * @param headerTextColor String : This is text color of header
+     * @param btnColor String : This color will be used for all over the app for buttons
+     */
     private fun setBackgroundColor(headerColor: String, headerTextColor: String, btnColor: String) {
         Util.headerColor = headerColor
         Util.headerTextColor = headerTextColor
@@ -187,6 +196,6 @@ class GydeHomeActivity : AppCompatActivity() {
 
         layout_welcome.setBackgroundColor(Color.parseColor(headerColor))
         tv_greeting.setTextColor(Color.parseColor(headerTextColor))
-
+        img_menu.setColorFilter(Color.parseColor(headerTextColor))
     }
 }

@@ -1,15 +1,12 @@
 package com.gyde.mylibrary.screens
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,7 +19,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gyde.library.network.retrofit.WalkthroughListInterface
 import com.gyde.mylibrary.R
 import com.gyde.mylibrary.adapter.WalkthroughAdapter
 import com.gyde.mylibrary.listener.WalkthroughListeners
@@ -30,8 +26,10 @@ import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 import com.gyde.mylibrary.network.response.walkthroughlist.WalkthroughsListResponse
 import com.gyde.mylibrary.network.response.walkthroughsteps.WalkthroughStepsResponse
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
+import com.gyde.mylibrary.network.retrofit.WalkthroughListInterface
 import com.gyde.mylibrary.utils.*
 import kotlinx.android.synthetic.main.tab_layout_1.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -99,6 +97,7 @@ internal class WalkthroughFragment :
                 )
             val bundle = applicationInfo.metaData
             gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
+            Util.appId = gydeApiKey
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
@@ -122,25 +121,7 @@ internal class WalkthroughFragment :
         mAdapter.filterList(filteredList)
     }
 
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw = connectivityManager.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-                else -> false
-            }
-        } else {
-            return connectivityManager.activeNetworkInfo?.isConnected ?: false
-        }
-    }
-
-    private fun showDialog() {
+    private fun showInternetConnectivityDialog() {
         val dialog = Dialog(requireContext())
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_internet_not_available)
@@ -156,11 +137,14 @@ internal class WalkthroughFragment :
         )
     }
 
+    /**
+     * Get walkthrough list from server
+     */
     private fun getWalkthroughListApiCall() {
 
-        if (!isNetworkAvailable(requireContext())) {
+        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
             progressBar_cyclic!!.visibility = View.GONE
-            showDialog()
+            showInternetConnectivityDialog()
         } else {
             progressBar_cyclic!!.visibility = View.VISIBLE
             val request = ServiceBuilder.buildService(WalkthroughListInterface::class.java)
@@ -205,10 +189,14 @@ internal class WalkthroughFragment :
         getWalkthroughSteps(flowId)
     }
 
+    /**
+     * Get walkthrough steps by flowId
+     * @param flowId String : Selected flowId by user
+     */
     private fun getWalkthroughSteps(flowId: String) {
-        if (!isNetworkAvailable(requireContext())) {
+        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
             progressBar_cyclic!!.visibility = View.GONE
-            Toast.makeText(activity, "No Internet Connection", Toast.LENGTH_SHORT).show()
+            showInternetConnectivityDialog()
         } else {
             progressBar_cyclic!!.visibility = View.VISIBLE
             val request = ServiceBuilder.buildService(WalkthroughListInterface::class.java)
@@ -235,6 +223,8 @@ internal class WalkthroughFragment :
                                     it.flowInitText,
                                     it.steps.size
                                 ).show()
+
+                                saveLog(flowId)
                             }
                         }
                         progressBar_cyclic!!.visibility = View.GONE
@@ -249,7 +239,7 @@ internal class WalkthroughFragment :
     }
 
     override fun onPlayVideoClicked() {
-        // TODO: this will be added once play video integrated on webportal
+        // this will be added once play video integrated on web portal
     }
 
     override fun onStartGuideClicked() {
@@ -270,6 +260,7 @@ internal class WalkthroughFragment :
     }
 
     private val runningActivity: Activity
+        @SuppressLint("PrivateApi")
         get() {
             try {
                 val activityThreadClass = Class.forName("android.app.ActivityThread")
@@ -295,11 +286,15 @@ internal class WalkthroughFragment :
             throw RuntimeException("Didn't find the running activity")
         }
 
+    /**
+     * Get current opened activity name.
+     * @param activity Activity : current opened activity instance
+     * @return String : returns the activity class name.
+     */
     private fun getActivityName(activity: Activity): String {
         val packageManager = activity.packageManager
         try {
             val info = packageManager.getActivityInfo(activity.componentName, 0)
-            Log.e("app", "Activity name:" + info.name)
             return info.name
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
@@ -319,6 +314,11 @@ internal class WalkthroughFragment :
         }
     }
 
+    /**
+     * Get current tooltip position like top or bottom
+     * left and right will be implemented later on
+     * @return GydeTooltipPosition
+     */
     private fun getToolTipPosition(): GydeTooltipPosition {
         return when (Util.walkthroughSteps[Util.stepCounter].placement) {
             "top" -> GydeTooltipPosition.DRAW_TOP
@@ -426,5 +426,52 @@ internal class WalkthroughFragment :
             },
             500
         )
+    }
+
+    /**
+     * Save user log to server when user starts any walkthrough.
+     * @param flowId String
+     */
+    private fun saveLog(flowId: String) {
+        if (!NetworkUtils.isNetworkAvailable(requireContext())) {
+            showInternetConnectivityDialog()
+        } else {
+            val request = ServiceBuilder.buildService(WalkthroughListInterface::class.java)
+
+            request.saveUserLog(
+                appId = gydeApiKey,
+                flowID = flowId,
+                timestamp = System.currentTimeMillis(),
+                type = "runFlowLog",
+                uuid = Util.getUuid(requireContext()),
+                url = "",
+                source = "android",
+                activityName = getFirstActivityName()
+            ).enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            Log.e("log", "" + response.body())
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(activity, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+    }
+
+    private fun getFirstActivityName(): String {
+        for (item in Util.walkthroughSteps) {
+            if (item.stepDescription == GydeStepDescription.OPEN_NEW_SCREEN.value) {
+                return item.screenName
+            }
+        }
+        return ""
     }
 }

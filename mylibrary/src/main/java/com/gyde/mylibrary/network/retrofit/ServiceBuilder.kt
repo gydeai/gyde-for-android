@@ -8,7 +8,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://stage.app.gyde.ai/android/")
+        .baseUrl("https://stage.app.gyde.ai/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

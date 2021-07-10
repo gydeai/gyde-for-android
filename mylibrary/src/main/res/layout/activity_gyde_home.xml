@@ -4,63 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.GydeHomeActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".screens.GydeHomeActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FF964DF7"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#FF964DF7">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_menu"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/menu_options"
+            android:padding="10dp"
+            android:src="@drawable/ic_menu_option"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:id="@+id/tv_greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Welcome!"
-            android:textSize="25sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/proxima_nova"/>
+            android:fontFamily="@font/proxima_nova"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Welcome!" />
+
         <TextView
             android:id="@+id/tv_company_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Uby Admin Panel"
-            android:textSize="20sp"
-            android:textColor="@color/white"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="15dp"
-            android:fontFamily="@font/proxima_nova"/>
-    </LinearLayout>
+            android:fontFamily="@font/proxima_nova"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_greeting"
+            tools:text="Uby Admin Panel" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_welcome"
-        android:background="@color/white"
-        app:tabTextColor="@color/black"
         app:tabIndicatorColor="@color/gyde_tab_indicator_color"
-        app:tabTextAppearance="@style/tab_text"/>
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="@color/black" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-        android:background="@color/white"/>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <ProgressBar
         android:id="@+id/progressBar_cyclic"
