@@ -7,5 +7,6 @@ data class Walkthrough(
     val order: Int,
     val type: String,
     val videoOnlyFlag: Boolean,
-    val walkthroughVideoLink: String
+    val walkthroughVideoLink: String,
+    val language: String
 )

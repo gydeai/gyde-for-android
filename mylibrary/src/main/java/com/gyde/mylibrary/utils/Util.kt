@@ -12,12 +12,10 @@ import java.util.*
 class Util {
 
     companion object {
-        val OPTIONS_MENU = arrayOf(
-            "Select Language"
-        )
 
         lateinit var helpArticle: List<HelpArticle>
         lateinit var walkthroughList: List<Walkthrough>
+        lateinit var languageOptions: Array<String>
         var walkthroughSteps = mutableListOf<Step>()
         var stepCounter = 0
         var isPlayVoiceOverEnabled = false
@@ -27,6 +25,7 @@ class Util {
         var deepLinkData: String = ""
         var isDeepLink = false
         var appId = ""
+        var selectedLanguage = "English"
 
         @SuppressLint("HardwareIds")
         fun getUuid(context: Context): String {

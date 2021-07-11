@@ -17,6 +17,7 @@ import com.gyde.mylibrary.R
 import com.gyde.mylibrary.adapter.HelpArticleAdapter
 import com.gyde.mylibrary.listener.HelpArticleListener
 import com.gyde.mylibrary.network.response.walkthroughlist.HelpArticle
+import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
 import com.gyde.mylibrary.network.retrofit.WalkthroughListInterface
 import com.gyde.mylibrary.utils.NetworkUtils
@@ -71,10 +72,26 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
         }
     }
 
+    internal fun updateLanguageSelection(selectedLanguage: String) {
+        val newLanguageList = mutableListOf<HelpArticle>()
+        for (item in Util.helpArticle) {
+            if (item.language.equals(selectedLanguage, true)) {
+                newLanguageList.add(item)
+            }
+        }
+        try {
+            mAdapter.updateData(newLanguageList)
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+        }
+    }
+
     private fun filter(text: String) {
         val filteredList: ArrayList<HelpArticle> = ArrayList()
         for (item in Util.helpArticle) {
-            if (item.question.lowercase().contains(text.lowercase())) {
+            if (item.question.lowercase()
+                    .contains(text.lowercase()) && item.language.equals(Util.selectedLanguage, true)
+            ) {
                 filteredList.add(item)
             }
         }
@@ -84,9 +101,7 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
     override fun onResume() {
         super.onResume()
         Log.e("HelpArticle", "OnResume")
-        if (Util.helpArticle.isNotEmpty()) {
-            mAdapter.updateData(Util.helpArticle)
-        }
+        updateLanguageSelection(Util.selectedLanguage)
     }
 
     companion object {

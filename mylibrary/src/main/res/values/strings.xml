@@ -9,4 +9,7 @@
     <string name="menu_options">Menu options</string>
     <string name="close_tooltip">Close Tooltip</string>
     <string name="volume_toggle_option">Volume Toggle Option</string>
+    <string name="select_language">Select Language</string>
+    <string name="accept">Select</string>
+    <string name="cancel">Cancel</string>
 </resources>

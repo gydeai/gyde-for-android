@@ -1,6 +1,7 @@
 package com.gyde.mylibrary.screens
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.viewpager2.widget.ViewPager2
@@ -27,8 +29,11 @@ import retrofit2.Response
 import java.util.*
 
 
-class GydeHomeActivity : AppCompatActivity() {
+class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private var gydeApiKey: String = ""
+    private var walkthroughFragment = WalkthroughFragment.newInstance()
+    private var helpArticlesFragment = HelpArticlesFragment.newInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gyde_home)
@@ -42,12 +47,49 @@ class GydeHomeActivity : AppCompatActivity() {
 
     private fun initializeListeners() {
         img_menu.setOnClickListener {
-            val menu = PopupMenu(this@GydeHomeActivity, it)
-            for (s in Util.OPTIONS_MENU) {
-                menu.menu.add(s)
-            }
-            menu.show()
+            showMenu(it)
         }
+    }
+
+    fun showMenu(v: View) {
+        PopupMenu(this, v).apply {
+            setOnMenuItemClickListener(this@GydeHomeActivity)
+            inflate(R.menu.menu)
+            show()
+        }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.menu_language -> {
+                showLanguageDialog()
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun showLanguageDialog() {
+        val options = Util.languageOptions
+        var selectedItem = 0
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select your preferred language")
+        builder.setSingleChoiceItems(
+            options, 0
+        ) { _: DialogInterface, item: Int ->
+            selectedItem = item
+        }
+        builder.setPositiveButton(R.string.accept) { dialogInterface: DialogInterface, p1: Int ->
+            walkthroughFragment.updateLanguageSelection(options[selectedItem])
+            helpArticlesFragment.updateLanguageSelection(options[selectedItem])
+            Util.selectedLanguage = options[selectedItem]
+            dialogInterface.dismiss()
+        }
+        builder.setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface, p1: Int ->
+            dialogInterface.dismiss()
+        }
+        builder.create()
+        builder.show()
     }
 
     private fun getIntentData() {
@@ -104,8 +146,8 @@ class GydeHomeActivity : AppCompatActivity() {
 
     private fun setUpViewPager() {
         val fragmentList = arrayListOf(
-            WalkthroughFragment.newInstance(),
-            HelpArticlesFragment.newInstance()
+            walkthroughFragment,
+            helpArticlesFragment
         )
         pager.adapter = ViewPagerAdapter(this, fragmentList)
 
@@ -165,6 +207,13 @@ class GydeHomeActivity : AppCompatActivity() {
                                 }
                                 if (!it.helpArticles.isNullOrEmpty()) {
                                     Util.helpArticle = it.helpArticles
+                                }
+                                if (!it.languageOptions.isNullOrEmpty()) {
+                                    Util.languageOptions = it.languageOptions.mapNotNull { item ->
+                                        item
+                                    }.toTypedArray()
+                                } else {
+                                    Util.languageOptions[0] = "English"
                                 }
                                 setBackgroundColor(it.headerColor, it.headerTextColor, it.btnColor)
                             }

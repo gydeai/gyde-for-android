@@ -105,7 +105,14 @@ internal class WalkthroughFragment :
 
     private fun showWalkthroughList() {
         if (Util.walkthroughList.isNotEmpty()) {
-            mAdapter.updateData(Util.walkthroughList)
+            var filteredWalkthrough = mutableListOf<Walkthrough>()
+            for (item in Util.walkthroughList) {
+                if (item.language == Util.selectedLanguage) {
+                    filteredWalkthrough.add(item)
+                }
+            }
+
+            mAdapter.updateData(filteredWalkthrough)
         } else {
             getWalkthroughListApiCall()
         }
@@ -114,7 +121,9 @@ internal class WalkthroughFragment :
     private fun filter(text: String) {
         val filteredList: ArrayList<Walkthrough> = ArrayList()
         for (item in Util.walkthroughList) {
-            if (item.flowName.lowercase().contains(text.lowercase())) {
+            if (item.flowName.lowercase()
+                    .contains(text.lowercase()) && item.language.equals(Util.selectedLanguage, true)
+            ) {
                 filteredList.add(item)
             }
         }
@@ -157,9 +166,9 @@ internal class WalkthroughFragment :
                     ) {
                         if (response.isSuccessful) {
                             response.body()?.let {
-                                mAdapter.updateData(it.walkthroughs)
                                 Util.helpArticle = it.helpArticles
                                 Util.walkthroughList = it.walkthroughs
+                                showWalkthroughList()
                             }
                         }
                         progressBar_cyclic!!.visibility = View.GONE
@@ -179,6 +188,16 @@ internal class WalkthroughFragment :
             getWalkthroughSteps(Util.deepLinkData)
             Util.isDeepLink = false
         }
+    }
+
+    internal fun updateLanguageSelection(selectedLanguage: String) {
+        var newLanguageList = mutableListOf<Walkthrough>()
+        for (item in Util.walkthroughList) {
+            if (item.language.equals(selectedLanguage, true)) {
+                newLanguageList.add(item)
+            }
+        }
+        mAdapter.updateData(newLanguageList)
     }
 
     companion object {
