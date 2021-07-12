@@ -52,3 +52,7 @@ u
 Emylibrary/src/main/java/com/gyde/mylibrary/utils/GydeTooltipWindow.kt,b/1/b1a07f4e7c8daa4c4f1ef0fa2efa8f954d387fae
 p
 @mylibrary/src/main/java/com/gyde/mylibrary/utils/NetworkUtils.kt,b/b/bba88b6112514153d936409c8d363d802a2675be
+—
+gmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/WalkthroughsListResponse.kt,0/1/01fb5c49149626eda28a27b0641a86b98fa8e18c
+Š
+Zmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughlist/Walkthrough.kt,7/a/7a79f64266440a381321fd29b7bb2334fc331291
