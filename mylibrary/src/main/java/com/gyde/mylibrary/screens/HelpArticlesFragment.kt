@@ -17,7 +17,6 @@ import com.gyde.mylibrary.R
 import com.gyde.mylibrary.adapter.HelpArticleAdapter
 import com.gyde.mylibrary.listener.HelpArticleListener
 import com.gyde.mylibrary.network.response.walkthroughlist.HelpArticle
-import com.gyde.mylibrary.network.response.walkthroughlist.Walkthrough
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
 import com.gyde.mylibrary.network.retrofit.WalkthroughListInterface
 import com.gyde.mylibrary.utils.NetworkUtils
@@ -79,11 +78,7 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
                 newLanguageList.add(item)
             }
         }
-        try {
-            mAdapter.updateData(newLanguageList)
-        } catch (ex: java.lang.Exception) {
-            ex.printStackTrace()
-        }
+        updateAdapterData(newLanguageList)
     }
 
     private fun filter(text: String) {
@@ -95,7 +90,24 @@ internal class HelpArticlesFragment : Fragment(), HelpArticleListener {
                 filteredList.add(item)
             }
         }
-        mAdapter.filterList(filteredList)
+        updateAdapterData(filteredList)
+    }
+
+    private fun updateAdapterData(updatedArticleList: List<HelpArticle>) {
+        try {
+            if (updatedArticleList.isEmpty()) {
+                tv_no_contents_available_article.text =
+                    this@HelpArticlesFragment.getString(R.string.searched_content_not_available)
+                recycler_help_article.visibility = View.GONE
+                tv_no_contents_available_article.visibility = View.VISIBLE
+            } else {
+                mAdapter.updateData(updatedArticleList)
+                recycler_help_article.visibility = View.VISIBLE
+                tv_no_contents_available_article.visibility = View.GONE
+            }
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+        }
     }
 
     override fun onResume() {

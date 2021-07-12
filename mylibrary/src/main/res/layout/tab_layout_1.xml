@@ -24,38 +24,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:orientation="horizontal"
+            android:layout_marginBottom="5dp"
             android:gravity="center"
-            android:layout_marginBottom="5dp">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/gyde_logo"/>
+                android:src="@drawable/gyde_logo" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/proxima_nova"
                 android:text="@string/powered_by"
-                android:layout_marginStart="5dp"
-                android:textColor="@color/gyde_text_color_grey"
-                android:fontFamily="@font/proxima_nova"/>
+                android:textColor="@color/gyde_text_color_grey" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/gyde"
-                android:textStyle="bold"
                 android:layout_marginStart="5dp"
+                android:fontFamily="@font/proxima_nova"
+                android:text="@string/gyde"
                 android:textColor="@color/gyde_text_color_blue"
-                android:fontFamily="@font/proxima_nova"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -66,11 +69,27 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/layout_branding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_search" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_no_contents_available"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:fontFamily="@font/proxima_nova"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textColor="@color/gyde_text_color_grey"
+        app:layout_constraintBottom_toTopOf="@id/layout_branding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edt_search"
-        android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/layout_branding"/>
+        tools:text="No contents available" />
 
     <ProgressBar
         android:id="@+id/progressBar_cyclic"
@@ -80,10 +99,10 @@
         android:layout_centerVertical="true"
         android:minWidth="50dp"
         android:minHeight="50dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        android:visibility="gone"/>
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

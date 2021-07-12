@@ -59,8 +59,8 @@ internal class WalkthroughAdapter(
         notifyDataSetChanged()
     }
 
-    fun filterList(filteredList: ArrayList<Walkthrough>) {
-        walkthroughList = filteredList
-        notifyDataSetChanged()
-    }
+//    fun filterList(filteredList: ArrayList<Walkthrough>) {
+//        walkthroughList = filteredList
+//        notifyDataSetChanged()
+//    }
 }

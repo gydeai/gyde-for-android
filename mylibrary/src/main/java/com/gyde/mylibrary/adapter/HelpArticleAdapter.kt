@@ -58,8 +58,8 @@ internal class HelpArticleAdapter(
         notifyDataSetChanged()
     }
 
-    fun filterList(filteredList: ArrayList<HelpArticle>) {
-        helpArticle = filteredList
-        notifyDataSetChanged()
-    }
+//    fun filterList(filteredList: ArrayList<HelpArticle>) {
+//        helpArticle = filteredList
+//        notifyDataSetChanged()
+//    }
 }

@@ -44,12 +44,8 @@ Wmylibrary/src/main/java/com/gyde/mylibrary/network/retrofit/WalkthroughListInte
 Rmylibrary/src/main/java/com/gyde/mylibrary/screens/CustomDialogGuideInformation.kt,7/9/795de37c5ed8f3c26887c52a2caf6833b09cdd38
 „
 Tmylibrary/src/main/java/com/gyde/mylibrary/network/response/walkthroughsteps/Step.kt,8/5/85b77847c149dd10ddaf5e988ca20a4919471207
-x
-Hmylibrary/src/main/java/com/gyde/mylibrary/adapter/HelpArticleAdapter.kt,0/9/095563f0cd107726e987a95f44aba57a341975e4
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
-x
-Hmylibrary/src/main/java/com/gyde/mylibrary/adapter/WalkthroughAdapter.kt,0/1/0151118a20130b9b9d6cd68df59ad7d10bcd8db5
 €
 Pmylibrary/src/main/java/com/gyde/mylibrary/screens/HelpArticleDetailsActivity.kt,5/f/5f5ed4f9127a7c71137f7d6ee942a74dcd14731d
 u

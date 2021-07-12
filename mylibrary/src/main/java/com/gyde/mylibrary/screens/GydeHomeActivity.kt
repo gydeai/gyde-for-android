@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
@@ -42,7 +41,6 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         getGydeAppKey()
         getWalkthroughListApiCall()
         initializeListeners()
-
     }
 
     private fun initializeListeners() {
@@ -71,11 +69,19 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
     private fun showLanguageDialog() {
         val options = Util.languageOptions
+        var checkedItem = 0
+        if (Util.selectedLanguage.isNotEmpty()) {
+            for (i in options.indices) {
+                if (options[i] == Util.selectedLanguage) {
+                    checkedItem = i
+                }
+            }
+        }
         var selectedItem = 0
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select your preferred language")
         builder.setSingleChoiceItems(
-            options, 0
+            options, checkedItem
         ) { _: DialogInterface, item: Int ->
             selectedItem = item
         }
@@ -113,17 +119,26 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                 )
             val bundle = ai.metaData
             gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
-            Log.e("Key", "Api Key : $gydeApiKey")
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
 
+    /**
+     * Setup screen title and description
+     * @param welcomeGreeting String : Greeting message
+     * @param appName String : Application name
+     */
     private fun setUpTitle(welcomeGreeting: String, appName: String) {
         tv_greeting.text = String.format("%s", welcomeGreeting)
         tv_company_name.text = String.format("%s", appName)
     }
 
+    /**
+     * Setup tab layout. Set name for tabs
+     * @param walkthroughTabText String : walkthrough tab name from server
+     * @param helpArticlesTabText String : help article tab name from server
+     */
     private fun setUpTabLayout(walkthroughTabText: String, helpArticlesTabText: String) {
         tabLayout.addTab(tabLayout.newTab().setText(walkthroughTabText))
         tabLayout.addTab(tabLayout.newTab().setText(helpArticlesTabText))
@@ -144,6 +159,10 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         })
     }
 
+    /**
+     * Set up view pager.
+     * add two fragments on view pager.
+     */
     private fun setUpViewPager() {
         val fragmentList = arrayListOf(
             walkthroughFragment,
@@ -161,7 +180,7 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     /**
      * Show internet connectivity dialog if network not available
      */
-    private fun showDialog() {
+    private fun showInternetConnectivityDialog() {
         val dialog = Dialog(this@GydeHomeActivity)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_internet_not_available)
@@ -185,7 +204,7 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
         if (!NetworkUtils.isNetworkAvailable(this@GydeHomeActivity)) {
             progressBar_cyclic!!.visibility = View.GONE
-            showDialog()
+            showInternetConnectivityDialog()
         } else {
             progressBar_cyclic!!.visibility = View.VISIBLE
             val request = ServiceBuilder.buildService(WalkthroughListInterface::class.java)

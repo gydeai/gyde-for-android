@@ -105,7 +105,7 @@ internal class WalkthroughFragment :
 
     private fun showWalkthroughList() {
         if (Util.walkthroughList.isNotEmpty()) {
-            var filteredWalkthrough = mutableListOf<Walkthrough>()
+            val filteredWalkthrough = mutableListOf<Walkthrough>()
             for (item in Util.walkthroughList) {
                 if (item.language == Util.selectedLanguage) {
                     filteredWalkthrough.add(item)
@@ -127,7 +127,7 @@ internal class WalkthroughFragment :
                 filteredList.add(item)
             }
         }
-        mAdapter.filterList(filteredList)
+        updateRecyclerAdapter(filteredList)
     }
 
     private fun showInternetConnectivityDialog() {
@@ -191,13 +191,32 @@ internal class WalkthroughFragment :
     }
 
     internal fun updateLanguageSelection(selectedLanguage: String) {
-        var newLanguageList = mutableListOf<Walkthrough>()
+        val newLanguageList = mutableListOf<Walkthrough>()
         for (item in Util.walkthroughList) {
             if (item.language.equals(selectedLanguage, true)) {
                 newLanguageList.add(item)
             }
         }
-        mAdapter.updateData(newLanguageList)
+        updateRecyclerAdapter(newLanguageList)
+    }
+
+    /**
+     * Update recycler adapter data
+     * This will update when user search anything or
+     * User changes his language preferences.
+     * @param updatedList List<Walkthrough>
+     */
+    private fun updateRecyclerAdapter(updatedList: List<Walkthrough>) {
+        if (updatedList.isEmpty()) {
+            tv_no_contents_available.text =
+                this@WalkthroughFragment.getString(R.string.searched_content_not_available)
+            tv_no_contents_available.visibility = View.VISIBLE
+            recycler_walkthrough_list.visibility = View.GONE
+        } else {
+            tv_no_contents_available.visibility = View.GONE
+            recycler_walkthrough_list.visibility = View.VISIBLE
+            mAdapter.updateData(updatedList)
+        }
     }
 
     companion object {
