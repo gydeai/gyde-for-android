@@ -100,7 +100,7 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
 
     private fun getIntentData() {
         Util.deepLinkData = try {
-            intent.getStringExtra("GYDE_DEEP_LINK") ?: ""
+            intent.getStringExtra("GYDE_DEEP_LINK_DATA") ?: ""
         } catch (ex: java.lang.Exception) {
             ""
         }
