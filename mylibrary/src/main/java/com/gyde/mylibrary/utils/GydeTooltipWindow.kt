@@ -379,7 +379,6 @@ internal class GydeTooltipWindow(
         )
         setDescriptionText()
         setVolumeDrawable()
-        playAudio(voiceOverPath ?: "")
 
         initListeners(nextStepDescription, positionY)
         showEditTextFocus()
