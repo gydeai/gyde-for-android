@@ -28,9 +28,9 @@ implementation 'com.github.gydeai:gyde-for-android:$sdk-version'
 where $sdk-version is the latest version of the SDK available which is **1.0.0**
 
 [![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#adispatil/walkthrough-library)
+(https://jitpack.io/#gydeai/gyde-for-android)
 
-#### Step 3: Add GYDE APP ID in anroid manifest
+#### Step 3: Add GYDE APP ID in android manifest
 Add Gyde App Id provided to you from Gyde.ai into your manifest file.
 ```
 <application
