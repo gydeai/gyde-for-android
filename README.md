@@ -1,5 +1,5 @@
 # Integrate Gyde SDK in your Android project
-This article explains how to install and update the Whatfix Android SDK in your project.
+This article explains how to install and update the Gyde Android SDK in your project.
 
 ## Prerequisites:
 - Android Studio
