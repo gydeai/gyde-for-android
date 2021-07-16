@@ -361,6 +361,12 @@ internal class WalkthroughFragment :
         return when (Util.walkthroughSteps[Util.stepCounter].placement) {
             "top" -> GydeTooltipPosition.DRAW_TOP
             "bottom" -> GydeTooltipPosition.DRAW_BOTTOM
+            "bottom left" -> GydeTooltipPosition.DRAW_BOTTOM_LEFT
+            "bottom right" -> GydeTooltipPosition.DRAW_BOTTOM_RIGHT
+            "bottom center" -> GydeTooltipPosition.DRAW_BOTTOM_CENTER
+            "top left" -> GydeTooltipPosition.DRAW_TOP_LEFT
+            "top right" -> GydeTooltipPosition.DRAW_TOP_RIGHT
+            "top center" -> GydeTooltipPosition.DRAW_TOP_CENTER
             else -> GydeTooltipPosition.DRAW_BOTTOM_CENTER
         }
     }

@@ -15,9 +15,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         getDeepLinkingData()
-        findViewById<Button>(R.id.btn_start).setOnClickListener {
-
-        }
     }
 
     private fun getDeepLinkingData() {
@@ -39,5 +36,9 @@ class MainActivity : AppCompatActivity() {
 
     fun startGyde(view: View) {
         startActivity(Intent(this@MainActivity, GydeHomeActivity::class.java))
+    }
+
+    fun listDemo(view: View) {
+        startActivity(Intent(this@MainActivity, RecyclerViewDemoActivity::class.java))
     }
 }
