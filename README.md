@@ -6,19 +6,26 @@ This article explains how to install and update the Gyde Android SDK in your pro
 - Android version: 5.0(Lollipop) & later (API level/SDK version 21 & later)
 
 ## Integration:
-#### Step 1: Add Gyde Maven repo URL in your build
+#### Step 1: Add token to gradle.properties
+Add the below token into to $HOME/.gradle/gradle.properties
+```
+authToken=jp_jmkqakru9rd4jo6s2l4v41lq7q
+```
+
+#### Step 2: Add Gyde Maven repo URL and credentials in your build
 Add maven ``` { url 'https://jitpack.io' } ``` in Gradle root
 ```
 repositories { 
    maven {
 
        url  'https://jitpack.io'
+       credentials { username authToken }
 
    }
 }
 ```
 
-#### Step 2: Add Gyde Maven repo URL in your build
+#### Step 3: Add Gyde Maven repo URL in your build
 Add bintray link in the app gradle dependency.
 
 To add Gyde dependency to your project, specify the following dependency configuration in the dependencies block of your build.gradle file.
@@ -29,7 +36,7 @@ where $sdk-version is the latest version of the SDK available which is **1.0.2**
 
 [![Release](https://jitpack.io/v/gydeai/gyde-for-android.svg)](https://jitpack.io/#gydeai/gyde-for-android)
 
-#### Step 3: Add GYDE APP ID in android manifest
+#### Step 4: Add GYDE APP ID in android manifest
 Add Gyde App Id provided to you from Gyde.ai into your manifest file.
 ```
 <application
@@ -40,7 +47,7 @@ Add Gyde App Id provided to you from Gyde.ai into your manifest file.
 </application>
 ```
 
-#### Step 4: Create a layout to start Gyde walkthrough flow
+#### Step 5: Create a layout to start Gyde walkthrough flow
 Create a button or layout to start gyde flow. Navigate to GydeHomeScreen on layout click.
 
 ##### Kotlin:
@@ -60,7 +67,7 @@ Button gydeHelp = findViewById(R.id.btn_gyde_help);
 ```
 Replace your button id with your appropriate layout and add click listner for navigation.
 
-#### Step 5: (Optional) Add deeplinking into your project for Gyde library
+#### Step 6: (Optional) Add deeplinking into your project for Gyde library
 ##### Step I:
 ```
     <activity android:name=".YOUR_ACTIVITY_NAME">
