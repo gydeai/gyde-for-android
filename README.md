@@ -25,10 +25,9 @@ To add Gyde dependency to your project, specify the following dependency configu
 ```
 implementation 'com.github.gydeai:gyde-for-android:$sdk-version'
 ```
-where $sdk-version is the latest version of the SDK available which is **1.0.0**
+where $sdk-version is the latest version of the SDK available which is **1.0.2**
 
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#gydeai/gyde-for-android)
+[![](https://jitpack.io/v/gydeai/gyde-for-android.svg)](https://jitpack.io/#gydeai/gyde-for-android)
 
 #### Step 3: Add GYDE APP ID in android manifest
 Add Gyde App Id provided to you from Gyde.ai into your manifest file.
