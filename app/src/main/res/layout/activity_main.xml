@@ -25,18 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:text="Help"
+        android:text="@string/help"
         android:onClick="startGyde"/>
-
-    <Button
-        android:id="@+id/btn_list_demo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_start"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
-        android:text="List Demo"
-        android:onClick="listDemo"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

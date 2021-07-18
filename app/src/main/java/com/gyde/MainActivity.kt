@@ -37,8 +37,4 @@ class MainActivity : AppCompatActivity() {
     fun startGyde(view: View) {
         startActivity(Intent(this@MainActivity, GydeHomeActivity::class.java))
     }
-
-    fun listDemo(view: View) {
-        startActivity(Intent(this@MainActivity, RecyclerViewDemoActivity::class.java))
-    }
 }
