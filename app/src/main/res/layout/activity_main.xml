@@ -36,7 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:text="List Demo"
-        android:onClick="listDemo"/>
+        android:text="Sign Up" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

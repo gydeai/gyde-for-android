@@ -3,11 +3,11 @@ package com.gyde
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.gyde.mylibrary.screens.GydeHomeActivity
+import com.gyde.mylibrary.utils.GydeExternalMethods
+import com.gyde.mylibrary.utils.GydeTooltipPosition
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,10 +35,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startGyde(view: View) {
-        startActivity(Intent(this@MainActivity, GydeHomeActivity::class.java))
-    }
 
-    fun listDemo(view: View) {
-        startActivity(Intent(this@MainActivity, RecyclerViewDemoActivity::class.java))
+        GydeExternalMethods.showGydeTooltipOnView(
+            context = this@MainActivity,
+            viewId = R.id.btn_list_demo,
+            title = "Sign Up",
+            description = "Don't have an account? \nPlease click here to register!!!",
+            tooltipPosition = GydeTooltipPosition.DRAW_BOTTOM_CENTER,
+            buttonText = "Click Me"
+        )
     }
 }

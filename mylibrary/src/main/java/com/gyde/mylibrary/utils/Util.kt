@@ -21,7 +21,7 @@ class Util {
         var isPlayVoiceOverEnabled = false
         var headerColor = ""
         var headerTextColor = ""
-        var btnColor = ""
+        var btnColor = "#0ba6ff"
         var deepLinkData: String = ""
         var isDeepLink = false
         var appId = ""

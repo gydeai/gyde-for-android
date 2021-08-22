@@ -40,7 +40,7 @@ internal class WalkthroughFragment :
     Fragment(),
     WalkthroughListeners,
     CustomDialogGuideInformation.GuideInformationDialogListener,
-    GydeTooltipWindow.TooTipClickListener {
+    GydeTooltipWindow.ToolTipClickListener {
     private lateinit var mAdapter: WalkthroughAdapter
     private var gydeApiKey: String = ""
     override fun onCreateView(
@@ -390,7 +390,8 @@ internal class WalkthroughFragment :
                         "Next"
                     },
                     this,
-                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath
+                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath,
+                    null
                 )
                 tipWindow.showTooltip(
                     if (Util.stepCounter < Util.walkthroughSteps.size) {
@@ -452,18 +453,19 @@ internal class WalkthroughFragment :
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 val tipWindow = GydeTooltipWindow(
-                    runningActivity,
-                    getToolTipPosition(),
-                    Util.walkthroughSteps[Util.stepCounter].viewId,
-                    Util.walkthroughSteps[Util.stepCounter].title,
-                    Util.walkthroughSteps[Util.stepCounter].content,
-                    if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
+                    context = runningActivity,
+                    toolTipPosition = getToolTipPosition(),
+                    viewId = Util.walkthroughSteps[Util.stepCounter].viewId,
+                    titleText = Util.walkthroughSteps[Util.stepCounter].title,
+                    descriptionText = Util.walkthroughSteps[Util.stepCounter].content,
+                    buttonText = if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
                         "Done"
                     } else {
                         "Next"
                     },
-                    this,
-                    Util.walkthroughSteps[Util.stepCounter].voiceOverPath
+                    nextClickListener = this,
+                    voiceOverPath = Util.walkthroughSteps[Util.stepCounter].voiceOverPath,
+                    viewIdInt = null
                 )
                 tipWindow.openDrawerMenu()
                 incrementCounter()
