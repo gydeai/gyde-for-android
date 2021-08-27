@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/gyde_ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gyde">
-        <activity android:name=".RecyclerViewDemoActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

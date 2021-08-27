@@ -26,6 +26,10 @@ class Util {
         var isDeepLink = false
         var appId = ""
         var selectedLanguage = "English"
+        const val keyFlowId = "flow_id"
+        const val keyVoiceOver = "voice_over"
+        const val keyGydeAppId = "GYDE_APP_ID"
+
 
         @SuppressLint("HardwareIds")
         fun getUuid(context: Context): String {

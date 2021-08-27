@@ -3,6 +3,7 @@ package com.gyde.mylibrary.screens
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -12,7 +13,11 @@ import android.os.Handler
 import android.os.Looper
 import android.util.ArrayMap
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -28,12 +33,13 @@ import com.gyde.mylibrary.network.response.walkthroughsteps.WalkthroughStepsResp
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
 import com.gyde.mylibrary.network.retrofit.WalkthroughListInterface
 import com.gyde.mylibrary.utils.*
+import com.gyde.mylibrary.utils.GydeStepDescription
+import com.gyde.mylibrary.utils.GydeTooltipWindow
 import kotlinx.android.synthetic.main.tab_layout_1.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
 
 internal class WalkthroughFragment :
@@ -62,7 +68,8 @@ internal class WalkthroughFragment :
         recycler_walkthrough_list.itemAnimator = DefaultItemAnimator()
         recycler_walkthrough_list.adapter = mAdapter
 
-        getAppIdFromManifest()
+        gydeApiKey = GydeInternalCommonUtils.getGydeAppKey(requireActivity(), requireContext().packageName)
+//        getAppIdFromManifest()
         showWalkthroughList()
         initListeners()
     }
@@ -75,33 +82,33 @@ internal class WalkthroughFragment :
         }
 
         edt_search.setOnQueryTextListener(object :
-            SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
+                SearchView.OnQueryTextListener,
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return false
+                }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                filter(newText)
-                return false
-            }
-        })
+                override fun onQueryTextChange(newText: String): Boolean {
+                    filter(newText)
+                    return false
+                }
+            })
     }
 
-    private fun getAppIdFromManifest() {
-        try {
-            val applicationInfo: ApplicationInfo =
-                requireContext().packageManager.getApplicationInfo(
-                    requireContext().packageName,
-                    PackageManager.GET_META_DATA
-                )
-            val bundle = applicationInfo.metaData
-            gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
-            Util.appId = gydeApiKey
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
+//    private fun getAppIdFromManifest() {
+//        try {
+//            val applicationInfo: ApplicationInfo =
+//                requireContext().packageManager.getApplicationInfo(
+//                    requireContext().packageName,
+//                    PackageManager.GET_META_DATA
+//                )
+//            val bundle = applicationInfo.metaData
+//            gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
+//            Util.appId = gydeApiKey
+//        } catch (ex: Exception) {
+//            ex.printStackTrace()
+//        }
+//    }
 
     private fun showWalkthroughList() {
         if (Util.walkthroughList.isNotEmpty()) {
@@ -122,7 +129,7 @@ internal class WalkthroughFragment :
         val filteredList: ArrayList<Walkthrough> = ArrayList()
         for (item in Util.walkthroughList) {
             if (item.flowName.lowercase()
-                    .contains(text.lowercase()) && item.language.equals(Util.selectedLanguage, true)
+                .contains(text.lowercase()) && item.language.equals(Util.selectedLanguage, true)
             ) {
                 filteredList.add(item)
             }
@@ -280,7 +287,7 @@ internal class WalkthroughFragment :
         // this will be added once play video integrated on web portal
     }
 
-    override fun onStartGuideClicked() {
+    override fun onStartGuideClicked(context: Context) {
         navigateToFirstScreen()
     }
 
@@ -340,7 +347,7 @@ internal class WalkthroughFragment :
         return ""
     }
 
-    override fun nextButtonClicked() {
+    override fun nextButtonClicked(context: Context) {
         if (Util.stepCounter < Util.walkthroughSteps.size) {
             when (Util.walkthroughSteps[Util.stepCounter].stepDescription) {
                 GydeStepDescription.SHOW_TOOLTIP.value -> showToolTip(0)

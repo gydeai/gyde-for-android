@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gyde.mylibrary.screens.GydeHomeActivity
 import com.gyde.mylibrary.utils.GydeExternalMethods
 import com.gyde.mylibrary.utils.GydeTooltipPosition
+import com.gyde.mylibrary.utils.Util
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +23,16 @@ class MainActivity : AppCompatActivity() {
             val uri: Uri? = intent.data
             if (uri != null) {
                 val parameters = uri.pathSegments
-                val param = parameters[parameters.size - 1]
+                val flowIdParam = parameters[parameters.size - 2]
+                val withVoiceOverParam = parameters[parameters.size - 1]
+
+                val bundle = Bundle()
+                bundle.putString(Util.keyFlowId, flowIdParam)
+                bundle.putString(Util.keyVoiceOver, withVoiceOverParam)
+
                 startActivity(
-                    Intent(this@MainActivity, GydeHomeActivity::class.java).putExtra(
-                        "GYDE_DEEP_LINK_DATA", param
+                    Intent(this@MainActivity, GydeHomeActivity::class.java).putExtras(
+                        bundle
                     )
                 )
             }
@@ -34,15 +41,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun startGyde(view: View) {
+    fun openGydeWalkthroughList(view: View) {
 
-        GydeExternalMethods.showGydeTooltipOnView(
+        startActivity(Intent(this@MainActivity, GydeHomeActivity::class.java))
+    }
+
+    fun showGydeTooltip(view: View) {
+        GydeExternalMethods.showGydeTooltip(
             context = this@MainActivity,
-            viewId = R.id.btn_list_demo,
-            title = "Sign Up",
-            description = "Don't have an account? \nPlease click here to register!!!",
-            tooltipPosition = GydeTooltipPosition.DRAW_BOTTOM_CENTER,
+            viewId = R.id.btn_start_walkthrough,
+            title = "Start Walkthrough",
+            description = "You can start walkthrough by ID",
+            tooltipPosition = GydeTooltipPosition.DRAW_TOP_CENTER,
             buttonText = "Click Me"
+        )
+    }
+
+    fun startGydeWalkthrough(view: View) {
+        GydeExternalMethods.startGydeWalkthrough(
+            this@MainActivity,
+            "934e442d-b0cc-4b63-bef1-3292527824ad"
         )
     }
 }

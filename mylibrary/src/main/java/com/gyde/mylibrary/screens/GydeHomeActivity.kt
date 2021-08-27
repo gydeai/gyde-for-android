@@ -19,6 +19,7 @@ import com.gyde.mylibrary.adapter.ViewPagerAdapter
 import com.gyde.mylibrary.network.response.walkthroughlist.WalkthroughsListResponse
 import com.gyde.mylibrary.network.retrofit.ServiceBuilder
 import com.gyde.mylibrary.network.retrofit.WalkthroughListInterface
+import com.gyde.mylibrary.utils.GydeInternalCommonUtils
 import com.gyde.mylibrary.utils.NetworkUtils
 import com.gyde.mylibrary.utils.Util
 import kotlinx.android.synthetic.main.activity_gyde_home.*
@@ -38,7 +39,7 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         setContentView(R.layout.activity_gyde_home)
         supportActionBar?.hide()
         getIntentData()
-        getGydeAppKey()
+        gydeApiKey = GydeInternalCommonUtils.getGydeAppKey(this@GydeHomeActivity, this.packageName)
         getWalkthroughListApiCall()
         initializeListeners()
     }
@@ -49,7 +50,7 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         }
     }
 
-    fun showMenu(v: View) {
+    private fun showMenu(v: View) {
         PopupMenu(this, v).apply {
             setOnMenuItemClickListener(this@GydeHomeActivity)
             inflate(R.menu.menu)
@@ -85,24 +86,33 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         ) { _: DialogInterface, item: Int ->
             selectedItem = item
         }
-        builder.setPositiveButton(R.string.accept) { dialogInterface: DialogInterface, p1: Int ->
+        builder.setPositiveButton(R.string.accept) { dialogInterface: DialogInterface, _: Int ->
             walkthroughFragment.updateLanguageSelection(options[selectedItem])
             helpArticlesFragment.updateLanguageSelection(options[selectedItem])
             Util.selectedLanguage = options[selectedItem]
             dialogInterface.dismiss()
         }
-        builder.setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface, p1: Int ->
+        builder.setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
             dialogInterface.dismiss()
         }
         builder.create()
         builder.show()
     }
 
+    /**
+     * Get intent data received in deep linking
+     * flow id and voice over should be received.
+     */
     private fun getIntentData() {
         Util.deepLinkData = try {
-            intent.getStringExtra("GYDE_DEEP_LINK_DATA") ?: ""
+            intent.getStringExtra(Util.keyFlowId) ?: ""
         } catch (ex: java.lang.Exception) {
             ""
+        }
+        Util.isPlayVoiceOverEnabled = try {
+            intent.getStringExtra(Util.keyVoiceOver).equals("wv")
+        } catch (ex: java.lang.Exception) {
+            false
         }
         Util.isDeepLink = Util.deepLinkData.isNotEmpty()
     }
@@ -110,19 +120,19 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
     /**
      * Get Gyde app key from manifest
      */
-    private fun getGydeAppKey() {
-        try {
-            val ai: ApplicationInfo =
-                this@GydeHomeActivity.packageManager.getApplicationInfo(
-                    this.packageName,
-                    PackageManager.GET_META_DATA
-                )
-            val bundle = ai.metaData
-            gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-    }
+//    private fun getGydeAppKey() {
+//        try {
+//            val ai: ApplicationInfo =
+//                this@GydeHomeActivity.packageManager.getApplicationInfo(
+//                    this.packageName,
+//                    PackageManager.GET_META_DATA
+//                )
+//            val bundle = ai.metaData
+//            gydeApiKey = bundle.getString("GYDE_APP_ID") ?: ""
+//        } catch (ex: Exception) {
+//            ex.printStackTrace()
+//        }
+//    }
 
     /**
      * Setup screen title and description

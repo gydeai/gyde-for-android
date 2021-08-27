@@ -13,4 +13,5 @@
     <string name="accept">Select</string>
     <string name="cancel">Cancel</string>
     <string name="searched_content_not_available">Searched content not available</string>
+    <string name="loading">Loading…</string>
 </resources>

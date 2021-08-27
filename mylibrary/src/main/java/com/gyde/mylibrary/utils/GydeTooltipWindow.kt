@@ -40,7 +40,7 @@ internal class GydeTooltipWindow(
 ) {
 
     interface ToolTipClickListener {
-        fun nextButtonClicked()
+        fun nextButtonClicked(context: Context)
     }
 
     private lateinit var view: View
@@ -234,6 +234,11 @@ internal class GydeTooltipWindow(
         initListeners(nextStepDescription, positionY)
     }
 
+    /**
+     * Show single tooltip from client input.
+     * This will be triggered as per user input
+     * On done button click it will only close the tooltip
+     */
     fun showTooltipFromClientInput(){
         if (viewIdInt!=null) {
             val resID = viewIdInt
@@ -370,7 +375,7 @@ internal class GydeTooltipWindow(
         }
         mNextButton.setOnClickListener {
             tipWindow?.dismiss()
-            nextClickListener?.nextButtonClicked()
+            nextClickListener?.nextButtonClicked(context)
             unregisterKeyBoardEventListener()
             hideKeyboard((context as Activity))
         }
@@ -405,7 +410,7 @@ internal class GydeTooltipWindow(
 
         mNextButton.setOnClickListener {
             tipWindow?.dismiss()
-            nextClickListener?.nextButtonClicked()
+            nextClickListener?.nextButtonClicked(context)
             if (nextStepDescription == GydeStepDescription.OPEN_NEW_SCREEN.value) {
                 (context as Activity).finish()
             }

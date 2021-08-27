@@ -43,12 +43,12 @@ internal class CustomDialogGuideInformation(
         tvTitle.setTextColor(Color.parseColor(Util.btnColor))
 
         btnStartGuide.setOnClickListener {
-            listener.onStartGuideClicked()
+            listener.onStartGuideClicked(context)
             dismiss()
         }
     }
 
     interface GuideInformationDialogListener {
-        fun onStartGuideClicked()
+        fun onStartGuideClicked(context: Context)
     }
 }
