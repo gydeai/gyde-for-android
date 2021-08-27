@@ -242,7 +242,7 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                                         item
                                     }.toTypedArray()
                                 } else {
-                                    Util.languageOptions[0] = "English"
+                                    Util.languageOptions = arrayOf("English")
                                 }
                                 setBackgroundColor(it.headerColor, it.headerTextColor, it.btnColor)
                             }

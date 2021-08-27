@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/gyde_ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/gyde_ic_launcher_round"
@@ -40,6 +39,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Gyde app id -->
         <meta-data
             android:name="GYDE_APP_ID"
             android:value="58ecdbc0-ed7c-4c6e-b8b6-79a0fb8cd78f" />
