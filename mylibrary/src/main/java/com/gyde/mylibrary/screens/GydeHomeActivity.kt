@@ -2,8 +2,6 @@ package com.gyde.mylibrary.screens
 
 import android.app.Dialog
 import android.content.DialogInterface
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -27,7 +25,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-
 
 class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private var gydeApiKey: String = ""
@@ -159,13 +156,12 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                //this will not require
+                // this will not require
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                //this will not require
+                // this will not require
             }
-
         })
     }
 
@@ -244,7 +240,14 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
                                 } else {
                                     Util.languageOptions = arrayOf("English")
                                 }
-                                setBackgroundColor(it.headerColor, it.headerTextColor, it.btnColor)
+                                if (!it.headerColor.isNullOrEmpty() || !it.headerTextColor.isNullOrEmpty())
+                                    it.headerColor?.let { it1 ->
+                                        setBackgroundColor(
+                                            it1,
+                                            it.headerTextColor,
+                                            it.btnColor
+                                        )
+                                    }
                             }
                         }
                     }
