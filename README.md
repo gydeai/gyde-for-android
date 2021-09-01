@@ -50,14 +50,14 @@ Add Gyde App Id provided to you from Gyde.ai into your manifest file.
 #### Step 5: Create a layout to start Gyde walkthrough flow
 Create a button or layout to start gyde flow. Navigate to GydeHomeScreen on layout click.
 
-##### Kotlin:
+**Kotlin**
 ```
 findViewById<Button>(R.id.btn_start).setOnClickListener { 
     startActivity(Intent(this@MainActivity, GydeHomeActivity::class.java))            
 }
 ```
 
-##### Java:
+**Java**
 ```
 Button gydeHelp = findViewById(R.id.btn_gyde_help);
         gydeHelp.setOnClickListener(v -> {
@@ -67,7 +67,63 @@ Button gydeHelp = findViewById(R.id.btn_gyde_help);
 ```
 Replace your button id with your appropriate layout and add click listner for navigation.
 
-#### Step 6: (Optional) Add deeplinking into your project for Gyde library
+
+### Other Features
+#### 1. Show single tooltip on any event
+You can show GydeTooltip if any event occured. It will show single Tooltip and on done button it will get dismissed.
+
+**Kotlin**
+```
+GydeExternalMethods.showGydeTooltip(
+            context = Context,         // Current activity context
+            viewId = Int,              // View Id where you want to show tooltip
+            title = String,            // Title for tooltip
+            description = String,      // Description/Message for tooltip
+            tooltipPosition = GydeTooltipPosition / null, // Tooltip position (Optional)
+            buttonText = String / null  // Text for button. Default message is Done (Optional)
+        )
+```
+**Java**
+```
+GydeExternalMethods.Companion.showGydeTooltip(
+            context = Context,         // Current activity context
+            viewId = Int,              // View Id where you want to show tooltip
+            title = String,            // Title for tooltip
+            description = String,      // Description/Message for tooltip
+            tooltipPosition = GydeTooltipPosition / null, // Tooltip position (Optional)
+            buttonText = String / null  // Text for button. Default message is Done (Optional)
+        );
+```
+You can choose any GydeTooltipPosition from below. This will be the position of Gyde Tooltip. It's optional field. Default value is BOTTOM_CENTER<br>
+GydeTooltipPosition.DRAW_BOTTOM_CENTER<br>
+GydeTooltipPosition.DRAW_BOTTOM_LEFT<br>
+GydeTooltipPosition.DRAW_BOTTOM_RIGHT<br>
+GydeTooltipPosition.DRAW_TOP_LEFT<br>
+GydeTooltipPosition.DRAW_TOP_CENTER<br>
+GydeTooltipPosition.DRAW_TOP_RIGHT<br>
+
+#### 2. Start walkthrough by walkthrough ID
+You can start any walkthrough on specific event occured. For this you will need walkthrough ID.
+
+**Kotlin**
+```
+GydeExternalMethods.startGydeWalkthrough(
+            context = Context,      // current activity context
+            walkthroughId = String  // walkthrough ID
+        )
+```
+
+**Java**
+```
+GydeExternalMethods.Companion.startGydeWalkthrough(
+            context = Context,      // current activity context
+            walkthroughId = String  // walkthrough ID
+        );
+```
+
+Note : Contact Gyde admin to get the walkthrough ID
+
+#### 3. Add deeplinking into your project for Gyde library
 ##### Step I:
 ```
     <activity android:name=".YOUR_ACTIVITY_NAME">
@@ -131,3 +187,5 @@ private fun getDeepLinkingData() {
         }
     }
 ```
+
+Other Features
