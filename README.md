@@ -32,7 +32,7 @@ To add Gyde dependency to your project, specify the following dependency configu
 ```
 implementation 'com.github.gydeai:gyde-for-android:$sdk-version'
 ```
-where $sdk-version is the latest version of the SDK available which is **1.0.2**
+where $sdk-version is the latest version of the SDK available which is **1.1.1**
 
 [![Release](https://jitpack.io/v/gydeai/gyde-for-android.svg)](https://jitpack.io/#gydeai/gyde-for-android)
 
