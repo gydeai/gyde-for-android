@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
 
     fun startGydeWalkthrough(view: View) {
         GydeExternalMethods.startGydeWalkthrough(
-            this@MainActivity,
-            "934e442d-b0cc-4b63-bef1-3292527824ad"
+            context = this@MainActivity,
+            walkthroughId = "934e442d-b0cc-4b63-bef1-3292527824ad"
         )
     }
 }
