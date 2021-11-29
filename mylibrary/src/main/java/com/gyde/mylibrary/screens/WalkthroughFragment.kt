@@ -258,7 +258,7 @@ internal class WalkthroughFragment :
 
                                 Util.walkthroughSteps.clear()
                                 Util.stepCounter = 0
-                                Util.isPlayVoiceOverEnabled = false
+//                                Util.isPlayVoiceOverEnabled = false
 
                                 Util.walkthroughSteps = it.steps.toMutableList()
                                 CustomDialogGuideInformation(

@@ -25,7 +25,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.registerEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.io.IOException
-
+import java.lang.Exception
 
 internal class GydeTooltipWindow(
     private var context: Context,
@@ -104,8 +104,14 @@ internal class GydeTooltipWindow(
      */
     fun showTooltip(nextStepDescription: Int) {
         if (!viewId.isNullOrEmpty()) {
-            val resID = context.resources.getIdentifier(viewId, "id", context.packageName)
-            view = (context as Activity).findViewById(resID) as View
+            try {
+                val resID = context.resources.getIdentifier(viewId, "id", context.packageName)
+                view = (context as Activity).findViewById(resID) as View
+            } catch (ex: Exception) {
+                ex.stackTrace
+                Log.d("resID", "Resource id not found")
+                return
+            }
         }
         val arrowPosition = GydeTooltipArrowPosition.ARROW_DEFAULT_CENTER
         val height = TypedValue.applyDimension(
@@ -151,7 +157,7 @@ internal class GydeTooltipWindow(
         val anchorRect = Rect(
             screenPos[0], screenPos[1],
             screenPos[0] +
-                    view.width,
+                view.width,
             screenPos[1] + view.height
         )
 
@@ -239,8 +245,8 @@ internal class GydeTooltipWindow(
      * This will be triggered as per user input
      * On done button click it will only close the tooltip
      */
-    fun showTooltipFromClientInput(){
-        if (viewIdInt!=null) {
+    fun showTooltipFromClientInput() {
+        if (viewIdInt != null) {
             val resID = viewIdInt
             view = (context as Activity).findViewById(resID) as View
         }
@@ -287,7 +293,7 @@ internal class GydeTooltipWindow(
         val anchorRect = Rect(
             screenPos[0], screenPos[1],
             screenPos[0] +
-                    view.width,
+                view.width,
             screenPos[1] + view.height
         )
 
@@ -465,7 +471,6 @@ internal class GydeTooltipWindow(
             currentDisplay.getMetrics(outMetrics)
         }
 
-
         val maxX: Int = outMetrics.widthPixels
         val maxY: Int = outMetrics.heightPixels
         Log.e("abc", "maxX : $maxX ::: maxY : $maxY")
@@ -506,7 +511,7 @@ internal class GydeTooltipWindow(
         val anchorRect = Rect(
             screenPos[0], screenPos[1],
             screenPos[0] +
-                    view.width,
+                view.width,
             screenPos[1] + view.height
         )
 
@@ -547,7 +552,7 @@ internal class GydeTooltipWindow(
             }
 
             else -> {
-                //not required...
+                // not required...
             }
         }
         tipWindow?.showAtLocation(
@@ -560,7 +565,6 @@ internal class GydeTooltipWindow(
         initListeners(nextStepDescription, positionY)
         showEditTextFocus()
         unregisterKeyBoardEventListener()
-
     }
 
     private fun showEditTextFocus() {
@@ -577,7 +581,8 @@ internal class GydeTooltipWindow(
             (context as Activity),
             KeyboardVisibilityEventListener {
                 // some code depending on keyboard visibility status
-            })
+            }
+        )
 
         unRegistrar.unregister()
     }
@@ -632,8 +637,6 @@ internal class GydeTooltipWindow(
             drawer.openDrawer(GravityCompat.START)
         }
     }
-
-
 
     private fun setVolumeDrawable() {
         if (Util.isPlayVoiceOverEnabled) {
