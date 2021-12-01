@@ -39,9 +39,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/gyde_logo" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/gyde_logo_new" />
 
             <TextView
                 android:layout_width="wrap_content"
