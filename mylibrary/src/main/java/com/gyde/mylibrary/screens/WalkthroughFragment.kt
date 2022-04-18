@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -62,16 +61,24 @@ internal class WalkthroughFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAdapter = WalkthroughAdapter(Util.walkthroughList, this)
-        val layoutManager = LinearLayoutManager(requireContext())
-        recycler_walkthrough_list.layoutManager = layoutManager
-        recycler_walkthrough_list.itemAnimator = DefaultItemAnimator()
-        recycler_walkthrough_list.adapter = mAdapter
+        try {
+            if (Util.walkthroughList.isNotEmpty()) {
+                mAdapter = WalkthroughAdapter(Util.walkthroughList, this)
+                val layoutManager = LinearLayoutManager(requireContext())
+                recycler_walkthrough_list.layoutManager = layoutManager
+                recycler_walkthrough_list.itemAnimator = DefaultItemAnimator()
+                recycler_walkthrough_list.adapter = mAdapter
 
-        gydeApiKey = GydeInternalCommonUtils.getGydeAppKey(requireActivity(), requireContext().packageName)
-//        getAppIdFromManifest()
-        showWalkthroughList()
-        initListeners()
+                gydeApiKey = GydeInternalCommonUtils.getGydeAppKey(
+                    requireActivity(),
+                    requireContext().packageName
+                )
+                showWalkthroughList()
+                initListeners()
+            }
+        } catch (ex: java.lang.Exception) {
+            ex.printStackTrace()
+        }
     }
 
     private fun initListeners() {
@@ -292,7 +299,7 @@ internal class WalkthroughFragment :
     }
 
     private fun navigateToFirstScreen() {
-        val activityToStart = Util.walkthroughSteps[0].screenName
+        val activityToStart = "com.gyde.MainActivity" // Util.walkthroughSteps[0].screenName
         try {
             val c = Class.forName(activityToStart)
             val intent = Intent(requireContext(), c)

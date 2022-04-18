@@ -44,7 +44,7 @@
         <!-- Gyde app id -->
         <meta-data
             android:name="GYDE_APP_ID"
-            android:value="58ecdbc0-ed7c-4c6e-b8b6-79a0fb8cd78f" />
+            android:value="c1c00ae1-b1d4-497f-a9d2-7cf29249ce22" />
     </application>
 
 </manifest>

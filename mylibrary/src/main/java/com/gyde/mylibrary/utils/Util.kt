@@ -25,6 +25,8 @@ class Util {
         var deepLinkData: String = ""
         var isDeepLink = false
         var appId = ""
+        var tooltipPositionX = 0
+        var tooltipPositionY = 0
         var selectedLanguage = "English"
         const val keyFlowId = "flow_id"
         const val keyVoiceOver = "voice_over"

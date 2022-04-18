@@ -3,8 +3,12 @@ package com.gyde.mylibrary.screens
 import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
+import android.util.TypedValue
 import android.view.*
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -24,9 +28,15 @@ import kotlinx.android.synthetic.main.activity_gyde_home.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
-class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
+interface OnKeyboardVisibilityListener {
+    fun onVisibilityChanged(visible: Boolean, nextStepDescription: Int, tooltipPositionY: Int)
+}
+
+class GydeHomeActivity :
+    AppCompatActivity(),
+    PopupMenu.OnMenuItemClickListener,
+    OnKeyboardVisibilityListener {
     private var gydeApiKey: String = ""
     private var walkthroughFragment = WalkthroughFragment.newInstance()
     private var helpArticlesFragment = HelpArticlesFragment.newInstance()
@@ -37,7 +47,11 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         supportActionBar?.hide()
         getIntentData()
         gydeApiKey = GydeInternalCommonUtils.getGydeAppKey(this@GydeHomeActivity, this.packageName)
-        getWalkthroughListApiCall()
+        try {
+            getWalkthroughListApiCall()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
         initializeListeners()
     }
 
@@ -45,6 +59,8 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         img_menu.setOnClickListener {
             showMenu(it)
         }
+
+        setKeyboardVisibilityListener(this)
     }
 
     private fun showMenu(v: View) {
@@ -278,5 +294,56 @@ class GydeHomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener 
         layout_welcome.setBackgroundColor(Color.parseColor(headerColor))
         tv_greeting.setTextColor(Color.parseColor(headerTextColor))
         img_menu.setColorFilter(Color.parseColor(headerTextColor))
+    }
+
+    private fun setKeyboardVisibilityListener(onKeyboardVisibilityListener: OnKeyboardVisibilityListener) {
+        val parentView = (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+        parentView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            private var alreadyOpen = false
+            private val defaultKeyboardHeightDP = 100
+            private val EstimatedKeyboardDP =
+                defaultKeyboardHeightDP + 48
+            private val rect: Rect = Rect()
+            override fun onGlobalLayout() {
+                val estimatedKeyboardHeight = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    EstimatedKeyboardDP.toFloat(),
+                    parentView.resources.displayMetrics
+                )
+                    .toInt()
+                parentView.getWindowVisibleDisplayFrame(rect)
+                val heightDiff: Int = parentView.rootView.height - (rect.bottom - rect.top)
+                val isShown = heightDiff >= estimatedKeyboardHeight
+                if (isShown == alreadyOpen) {
+                    Log.d("Keyboard state", "Ignoring global layout change...")
+                    return
+                }
+                alreadyOpen = isShown
+
+                var nextStepDescriptionIndex = if (Util.stepCounter < Util.walkthroughSteps.size) {
+                    if (Util.stepCounter == (Util.walkthroughSteps.size - 1)) {
+                        3
+                    } else {
+                        Util.walkthroughSteps[Util.stepCounter + 1].stepDescription
+                    }
+                } else {
+                    2
+                }
+
+                var tipPosition = Util.tooltipPositionY
+                onKeyboardVisibilityListener.onVisibilityChanged(
+                    isShown,
+                    nextStepDescriptionIndex,
+                    tipPosition
+                )
+            }
+        })
+    }
+
+    override fun onVisibilityChanged(
+        visible: Boolean,
+        nextStepDescription: Int,
+        tooltipPositionY: Int
+    ) {
     }
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Gyde</string>
     <string name="enter_your_name">Enter your name</string>
+    <string name="enter_password">Enter password</string>
     <string name="help">Help</string>
     <string name="show_tooltip">Show Tooltip</string>
     <string name="start_walkthrough">Start Walkthrough</string>

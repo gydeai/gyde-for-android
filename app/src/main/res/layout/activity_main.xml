@@ -4,10 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/white">
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/tvStart"
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="@string/enter_your_name"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +37,7 @@
         android:id="@+id/btn_start"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvStart"
+        app:layout_constraintTop_toBottomOf="@id/username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
