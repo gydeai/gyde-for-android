@@ -268,13 +268,15 @@ internal class WalkthroughFragment :
 //                                Util.isPlayVoiceOverEnabled = false
 
                                 Util.walkthroughSteps = it.steps.toMutableList()
-                                CustomDialogGuideInformation(
-                                    requireContext(),
-                                    this@WalkthroughFragment,
-                                    it.flowName,
-                                    it.flowInitText,
-                                    it.steps.size
-                                ).show()
+                                if (Util.walkthroughSteps.isNotEmpty()) {
+                                    CustomDialogGuideInformation(
+                                        requireContext(),
+                                        this@WalkthroughFragment,
+                                        it.flowName,
+                                        it.flowInitText,
+                                        it.steps.size
+                                    ).show()
+                                }
 
                                 saveLog(flowId)
                             }
