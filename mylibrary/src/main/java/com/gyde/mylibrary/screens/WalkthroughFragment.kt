@@ -45,6 +45,7 @@ internal class WalkthroughFragment :
     Fragment(),
     WalkthroughListeners,
     CustomDialogGuideInformation.GuideInformationDialogListener,
+    CommonDialog.CommonDialogListener,
     GydeTooltipWindow.ToolTipClickListener {
     private lateinit var mAdapter: WalkthroughAdapter
     private var gydeApiKey: String = ""
@@ -265,7 +266,6 @@ internal class WalkthroughFragment :
 
                                 Util.walkthroughSteps.clear()
                                 Util.stepCounter = 0
-//                                Util.isPlayVoiceOverEnabled = false
 
                                 Util.walkthroughSteps = it.steps.toMutableList()
                                 if (Util.walkthroughSteps.isNotEmpty()) {
@@ -276,6 +276,13 @@ internal class WalkthroughFragment :
                                         it.flowInitText,
                                         it.steps.size
                                     ).show()
+                                } else {
+                                    CommonDialog(
+                                        requireContext(),
+                                        this@WalkthroughFragment,
+                                        "Error...",
+                                        "Walkthrough steps not found. Please contact to admin"
+                                    )
                                 }
 
                                 saveLog(flowId)
@@ -354,6 +361,9 @@ internal class WalkthroughFragment :
             e.printStackTrace()
         }
         return ""
+    }
+
+    override fun onOkClicked(context: Context) {
     }
 
     override fun nextButtonClicked(context: Context) {

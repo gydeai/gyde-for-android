@@ -1,6 +1,7 @@
 package com.gyde.mylibrary.screens
 
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Rect
@@ -10,7 +11,6 @@ import android.util.TypedValue
 import android.view.*
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -36,6 +36,7 @@ interface OnKeyboardVisibilityListener {
 class GydeHomeActivity :
     AppCompatActivity(),
     PopupMenu.OnMenuItemClickListener,
+    CommonDialog.CommonDialogListener,
     OnKeyboardVisibilityListener {
     private var gydeApiKey: String = ""
     private var walkthroughFragment = WalkthroughFragment.newInstance()
@@ -245,6 +246,13 @@ class GydeHomeActivity :
                                     setUpTitle(it.welcomeGreeting, it.appName)
                                     setUpViewPager()
                                     setUpTabLayout(it.walkthroughTabText, it.helpArticlesTabText)
+                                } else {
+                                    CommonDialog(
+                                        this@GydeHomeActivity,
+                                        this@GydeHomeActivity,
+                                        "Error...",
+                                        "Walkthrough list not found. Please contact to admin"
+                                    )
                                 }
                                 if (!it.helpArticles.isNullOrEmpty()) {
                                     Util.helpArticle = it.helpArticles
@@ -270,11 +278,12 @@ class GydeHomeActivity :
 
                     override fun onFailure(call: Call<WalkthroughsListResponse>, t: Throwable) {
                         progressBar_cyclic!!.visibility = View.GONE
-                        Toast.makeText(
-                            this@GydeHomeActivity, "${t.message}",
-                            Toast.LENGTH_SHORT
+                        CommonDialog(
+                            this@GydeHomeActivity,
+                            this@GydeHomeActivity,
+                            "Error...",
+                            "Walkthrough list not found. Please contact to admin"
                         )
-                            .show()
                     }
                 })
         }
@@ -345,5 +354,9 @@ class GydeHomeActivity :
         nextStepDescription: Int,
         tooltipPositionY: Int
     ) {
+    }
+
+    override fun onOkClicked(context: Context) {
+
     }
 }
