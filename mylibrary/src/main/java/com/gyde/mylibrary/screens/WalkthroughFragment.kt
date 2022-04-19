@@ -282,7 +282,7 @@ internal class WalkthroughFragment :
                                         this@WalkthroughFragment,
                                         "Error...",
                                         "Walkthrough steps not found. Please contact to admin"
-                                    )
+                                    ).show()
                                 }
 
                                 saveLog(flowId)

@@ -252,7 +252,7 @@ class GydeHomeActivity :
                                         this@GydeHomeActivity,
                                         "Error...",
                                         "Walkthrough list not found. Please contact to admin"
-                                    )
+                                    ).show()
                                 }
                                 if (!it.helpArticles.isNullOrEmpty()) {
                                     Util.helpArticle = it.helpArticles
@@ -283,7 +283,7 @@ class GydeHomeActivity :
                             this@GydeHomeActivity,
                             "Error...",
                             "Walkthrough list not found. Please contact to admin"
-                        )
+                        ).show()
                     }
                 })
         }
