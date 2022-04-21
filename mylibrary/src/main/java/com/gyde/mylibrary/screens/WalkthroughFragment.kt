@@ -308,7 +308,7 @@ internal class WalkthroughFragment :
     }
 
     private fun navigateToFirstScreen() {
-        val activityToStart = "com.gyde.MainActivity" // Util.walkthroughSteps[0].screenName
+        val activityToStart = Util.walkthroughSteps[0].screenName
         try {
             val c = Class.forName(activityToStart)
             val intent = Intent(requireContext(), c)
